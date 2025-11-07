@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NY Batminton Club - ระบบจัดการสโมสร</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="bg-overlay" aria-hidden="true"></div>
+
+  <!-- Hero Section -->
+  <div id="hero-section" class="site-content d-flex vh-100 align-items-center justify-content-center">
+    <div class="text-center px-3">
+      <h1 class="display-4 fw-bold text-white">NY Batminton Club</h1>
+      <p class="lead text-white-50">ระบบจัดการสโมสรแบดมินตัน</p>
+      <a href="#" id="start-btn" class="btn btn-primary btn-lg mt-3">เริ่มใช้งาน</a>
+    </div>
+  </div>
+
+  <!-- Main Menu Section (hidden initially) -->
+  <div id="menu-section" class="site-content d-none">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="#" onclick="showSection('menu')">
+          🏸 NY Batminton Club
+        </a>
+      </div>
+    </nav>
+
+    <div class="container my-5">
+      <div id="main-menu" class="row g-4">
+        <div class="col-12 text-center mb-4">
+          <h2 class="text-white mb-3">🏸 ระบบจัดการสโมสรแบดมินตัน</h2>
+          <p class="text-white-50">เลือกเมนูที่ต้องการใช้งาน</p>
+        </div>
+        
+        <div class="col-md-4">
+          <div class="card bg-dark text-white border-primary h-100 menu-card" onclick="window.location.href='customer.html'">
+            <div class="card-body text-center p-4">
+              <div class="mb-3">
+                <i class="display-4 text-primary">👥</i>
+              </div>
+              <h5 class="card-title">บันทึกข้อมูลลูกค้า</h5>
+              <p class="card-text">จัดการข้อมูลสมาชิกและลูกค้า</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4">
+          <div class="card bg-dark text-white border-success h-100 menu-card" onclick="showSection('bookings')">
+            <div class="card-body text-center p-4">
+              <div class="mb-3">
+                <i class="display-4 text-success">🏸</i>
+              </div>
+              <h5 class="card-title">บันทึกการลงเล่น</h5>
+              <p class="card-text">จองคอร์ตและบันทึกการเล่น</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4">
+          <div class="card bg-dark text-white border-warning h-100 menu-card" onclick="showSection('pos')">
+            <div class="card-body text-center p-4">
+              <div class="mb-3">
+                <i class="display-4 text-warning">📋</i>
+              </div>
+              <h5 class="card-title">บันทึกใบ PO</h5>
+              <p class="card-text">จัดการใบสั่งซื้ออุปกรณ์</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customer Management Section -->
+  <div id="customers-section" class="site-content d-none">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="#" onclick="showSection('menu')">🏸 NY Batminton Club</a>
+        <div class="navbar-nav ms-auto">
+          <a class="nav-link" href="#" onclick="showSection('menu')">← กลับเมนูหลัก</a>
+        </div>
+      </div>
+    </nav>
+    
+    <div class="container my-5">
+      <h2 class="text-white mb-4">👥 บันทึกข้อมูลลูกค้า</h2>
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="card bg-dark text-white border-primary">
+            <div class="card-body">
+              <form id="customer-form">
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label class="form-label">ชื่อ</label>
+                    <input type="text" name="firstName" class="form-control bg-dark text-white border-secondary" placeholder="ชื่อ" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">นามสกุล</label>
+                    <input type="text" name="lastName" class="form-control bg-dark text-white border-secondary" placeholder="นามสกุล" required>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">เบอร์โทรศัพท์</label>
+                  <input type="tel" name="phone" class="form-control bg-dark text-white border-secondary" placeholder="08X-XXX-XXXX" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">ระดับการเล่น</label>
+                  <select name="level" class="form-select bg-dark text-white border-secondary" required>
+                    <option value="">เลือกระดับ</option>
+                    <option value="beginner">เริ่มต้น</option>
+                    <option value="intermediate">ปานกลาง</option>
+                    <option value="advanced">ชำนาญ</option>
+                    <option value="expert">ขั้นสูง</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Booking Management Section -->
+  <div id="bookings-section" class="site-content d-none">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="#" onclick="showSection('menu')">🏸 NY Batminton Club</a>
+        <div class="navbar-nav ms-auto">
+          <a class="nav-link" href="#" onclick="showSection('menu')">← กลับเมนูหลัก</a>
+        </div>
+      </div>
+    </nav>
+    
+    <div class="container my-5">
+      <h2 class="text-white mb-4">🏸 บันทึกการลงเล่น</h2>
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="card bg-dark text-white border-success">
+            <div class="card-body">
+              <form id="booking-form">
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label class="form-label">ชื่อผู้เล่น</label>
+                    <input type="text" name="playerName" class="form-control bg-dark text-white border-secondary" placeholder="ชื่อผู้เล่น" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">คอร์ต</label>
+                    <select name="court" class="form-select bg-dark text-white border-secondary" required>
+                      <option value="">เลือกคอร์ต</option>
+                      <option value="A">คอร์ต A</option>
+                      <option value="B">คอร์ต B</option>
+                      <option value="C">คอร์ต C</option>
+                      <option value="D">คอร์ต D</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label class="form-label">วันที่</label>
+                    <input type="date" name="date" class="form-control bg-dark text-white border-secondary" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">เวลา</label>
+                    <select name="time" class="form-select bg-dark text-white border-secondary" required>
+                      <option value="">เลือกเวลา</option>
+                      <option value="08:00-10:00">08:00 - 10:00</option>
+                      <option value="10:00-12:00">10:00 - 12:00</option>
+                      <option value="14:00-16:00">14:00 - 16:00</option>
+                      <option value="16:00-18:00">16:00 - 18:00</option>
+                      <option value="18:00-20:00">18:00 - 20:00</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">ประเภทการเล่น</label>
+                  <select name="gameType" class="form-select bg-dark text-white border-secondary" required>
+                    <option value="">เลือกประเภท</option>
+                    <option value="men-single">เดี่ยวชาย</option>
+                    <option value="women-single">เดี่ยวหญิง</option>
+                    <option value="men-double">คู่ชาย</option>
+                    <option value="women-double">คู่หญิง</option>
+                    <option value="mixed-double">คู่ผสม</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-success">บันทึกการจอง</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PO Management Section -->
+  <div id="pos-section" class="site-content d-none">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="#" onclick="showSection('menu')">🏸 NY Batminton Club</a>
+        <div class="navbar-nav ms-auto">
+          <a class="nav-link" href="#" onclick="showSection('menu')">← กลับเมนูหลัก</a>
+        </div>
+      </div>
+    </nav>
+    
+    <div class="container my-5">
+      <h2 class="text-white mb-4">📋 บันทึกใบ PO</h2>
+      <div class="row">
+        <div class="col-lg-10">
+          <div class="card bg-dark text-white border-warning">
+            <div class="card-body">
+              <form id="po-form">
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label class="form-label">เลขที่ PO</label>
+                    <input type="text" name="poNumber" class="form-control bg-dark text-white border-secondary" placeholder="PO-2025-001" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">วันที่สั่งซื้อ</label>
+                    <input type="date" name="orderDate" class="form-control bg-dark text-white border-secondary" required>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">ชื่อซัพพลายเออร์</label>
+                  <input type="text" name="supplier" class="form-control bg-dark text-white border-secondary" placeholder="บริษัท อุปกรณ์กีฬา จำกัด" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">รายการสินค้า</label>
+                  <div class="row g-2 mb-2">
+                    <div class="col-md-5">
+                      <input type="text" name="itemName" class="form-control bg-dark text-white border-secondary" placeholder="ชื่อสินค้า (เช่น ไม้แบด Yonex)">
+                    </div>
+                    <div class="col-md-2">
+                      <input type="number" name="quantity" class="form-control bg-dark text-white border-secondary" placeholder="จำนวน">
+                    </div>
+                    <div class="col-md-3">
+                      <input type="number" name="price" class="form-control bg-dark text-white border-secondary" placeholder="ราคาต่อชิ้น" step="0.01">
+                    </div>
+                    <div class="col-md-2">
+                      <button type="button" class="btn btn-outline-warning btn-sm w-100">เพิ่ม</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">หมายเหตุ</label>
+                  <textarea name="notes" class="form-control bg-dark text-white border-secondary" rows="3" placeholder="หมายเหตุเพิ่มเติม"></textarea>
+                </div>
+                <button type="submit" class="btn btn-warning">บันทึกใบ PO</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS bundle -->
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <!-- Main application script -->
+  <script src="js/main.js"></script>
+</body>
+</html>

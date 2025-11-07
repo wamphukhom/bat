@@ -1,13 +1,11 @@
-/* site/css/styles.css
-   Moved styles from root index.html. Uses relative path to ../img/background.jpg
-*/
+/* css/styles.css - Badminton Club Theme */
 html, body {
   height: 100%;
   margin: 0;
 }
 body {
-  background-color: #222; /* fallback color */
-  background-image: url('../img/background.jpg');
+  background-color: #1a1a1a; /* fallback color */
+  background-image: url('/img/background.jpg');
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: fixed;
@@ -15,20 +13,109 @@ body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   color: #fff;
 }
+
 /* overlay to improve text readability */
 .bg-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0,0,0,0.5);
   z-index: 1;
   pointer-events: none;
 }
+
 /* content wrapper should sit above overlay */
 .site-content {
   position: relative;
   z-index: 2;
 }
-/* small responsiveness tweaks */
+
+/* Hero section styling */
 h1.display-4 {
-  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+}
+
+/* Menu cards hover effects */
+.menu-card {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.menu-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  border-color: var(--bs-primary) !important;
+}
+
+.menu-card .card-body {
+  transition: all 0.3s ease;
+}
+
+.menu-card:hover .card-body {
+  background: rgba(255,255,255,0.05);
+}
+
+/* Navbar customization */
+.navbar-brand {
+  font-size: 1.5rem;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255,255,255,0.85);
+  transition: color 0.3s ease;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: #fff;
+}
+
+/* Form styling */
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.bg-dark.form-control,
+.bg-dark.form-select {
+  background-color: #2d3748 !important;
+  border-color: #4a5568;
+}
+
+.bg-dark.form-control:focus,
+.bg-dark.form-select:focus {
+  background-color: #2d3748 !important;
+  border-color: var(--bs-primary);
+}
+
+/* Card enhancements */
+.card.bg-dark {
+  backdrop-filter: blur(10px);
+  background-color: rgba(33, 37, 41, 0.9) !important;
+}
+
+/* Button hover effects */
+.btn {
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  h1.display-4 {
+    font-size: 2.5rem;
+  }
+  
+  .menu-card {
+    margin-bottom: 1rem;
+  }
 }

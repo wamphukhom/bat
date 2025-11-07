@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NY Batminton Club - บันทึกข้อมูลลูกค้า</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="bg-overlay" aria-hidden="true"></div>
+
+  <!-- Customer Management Section -->
+  <div class="site-content">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="main.html">🏸 NY Batminton Club</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="main.html">← กลับเมนูหลัก</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">หน้าแรก</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    
+    <div class="container my-5">
+      <h2 class="text-white mb-4">👥 บันทึกข้อมูลลูกค้า</h2>
+      
+      <div class="row">
+        <!-- Form Section -->
+        <div class="col-lg-8">
+          <div class="card bg-dark text-white border-primary">
+            <div class="card-body">
+              <h5 class="card-title mb-4">เพิ่มลูกค้าใหม่</h5>
+              <form id="customer-form">
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label class="form-label">ชื่อ <span class="text-danger">*</span></label>
+                    <input type="text" name="firstName" class="form-control bg-dark text-white border-secondary" placeholder="ชื่อ" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">นามสกุล <span class="text-danger">*</span></label>
+                    <input type="text" name="lastName" class="form-control bg-dark text-white border-secondary" placeholder="นามสกุล" required>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label class="form-label">เบอร์โทรศัพท์ <span class="text-danger">*</span></label>
+                    <input type="tel" name="phone" class="form-control bg-dark text-white border-secondary" placeholder="08X-XXX-XXXX" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">อีเมล</label>
+                    <input type="email" name="email" class="form-control bg-dark text-white border-secondary" placeholder="example@email.com">
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label class="form-label">ระดับการเล่น <span class="text-danger">*</span></label>
+                    <select name="level" class="form-select bg-dark text-white border-secondary" required>
+                      <option value="">เลือกระดับ</option>
+                      <option value="beginner">เริ่มต้น</option>
+                      <option value="intermediate">ปานกลาง</option>
+                      <option value="advanced">ชำนาญ</option>
+                      <option value="expert">ขั้นสูง</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">ประเภทสมาชิก</label>
+                    <select name="memberType" class="form-select bg-dark text-white border-secondary">
+                      <option value="regular">สมาชิกทั่วไป</option>
+                      <option value="vip">สมาชิก VIP</option>
+                      <option value="student">นักเรียน/นักศึกษา</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">ที่อยู่</label>
+                  <textarea name="address" class="form-control bg-dark text-white border-secondary" rows="3" placeholder="ที่อยู่"></textarea>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">หมายเหตุ</label>
+                  <textarea name="notes" class="form-control bg-dark text-white border-secondary" rows="2" placeholder="หมายเหตุเพิ่มเติม"></textarea>
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                  <button type="reset" class="btn btn-outline-secondary">ล้างข้อมูล</button>
+                  <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Customer List Section -->
+        <div class="col-lg-4">
+          <div class="card bg-dark text-white border-info">
+            <div class="card-body">
+              <h5 class="card-title mb-4">รายชื่อลูกค้าล่าสุด</h5>
+              <div id="customer-list">
+                <!-- Customer list will be populated by JavaScript -->
+                <p class="text-white-50 text-center">ยังไม่มีข้อมูลลูกค้า</p>
+              </div>
+              <div class="d-grid mt-3">
+                <button class="btn btn-outline-info btn-sm" onclick="showAllCustomers()">ดูรายชื่อทั้งหมด</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div class="modal fade" id="successModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark text-white border-success">
+        <div class="modal-header border-success">
+          <h5 class="modal-title">✅ สำเร็จ</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p id="success-message">บันทึกข้อมูลลูกค้าเรียบร้อยแล้ว</p>
+        </div>
+        <div class="modal-footer border-success">
+          <button type="button" class="btn btn-success" data-bs-dismiss="modal">ตกลง</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS bundle -->
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <!-- Customer management script -->
+  <script src="js/customer.js"></script>
+</body>
+</html>
