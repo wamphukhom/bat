@@ -1,7 +1,5 @@
-// customer.js - Customer Management System
-
-// Customer data storage (using localStorage)
-let customers = JSON.parse(localStorage.getItem('customers')) || [];
+// Customer data storage (using array of objects)
+let ccustomer = [];
 
 // Form submission handler
 function handleCustomerForm(event) {
@@ -10,25 +8,21 @@ function handleCustomerForm(event) {
   const formData = new FormData(event.target);
   const customer = {
     id: Date.now(), // Simple ID generation
-    firstName: formData.get('firstName'),
-    lastName: formData.get('lastName'),
-    phone: formData.get('phone'),
+    name: formData.get('name'),
     email: formData.get('email'),
     level: formData.get('level'),
-    memberType: formData.get('memberType') || 'regular',
-    address: formData.get('address'),
-    notes: formData.get('notes'),
+    position: formData.get('position'),
     createdAt: new Date().toISOString()
   };
   
   // Add to customers array
-  customers.push(customer);
+  ccustomer.push(customer);
   
   // Save to localStorage
-  localStorage.setItem('customers', JSON.stringify(customers));
+  localStorage.setItem('customers', JSON.stringify(ccustomer));
   
   // Show success message
-  showSuccessMessage(`บันทึกข้อมูลลูกค้า ${customer.firstName} ${customer.lastName} เรียบร้อยแล้ว`);
+  showSuccessMessage(`บันทึกข้อมูลลูกค้า ${customer.name} เรียบร้อยแล้ว`);
   
   // Reset form
   event.target.reset();
@@ -48,28 +42,20 @@ function showSuccessMessage(message) {
 function displayCustomerList() {
   const customerListElement = document.getElementById('customer-list');
   
-  if (customers.length === 0) {
+  if (ccustomer.length === 0) {
     customerListElement.innerHTML = '<p class="text-white-50 text-center">ยังไม่มีข้อมูลลูกค้า</p>';
     return;
   }
   
   // Show latest 5 customers
-  const latestCustomers = customers.slice(-5).reverse();
+  const latestCustomers = ccustomer.slice(-1).reverse();
   let html = '';
   
   latestCustomers.forEach(customer => {
-    const levelText = {
-      'beginner': 'เริ่มต้น',
-      'intermediate': 'ปานกลาง',
-      'advanced': 'ชำนาญ',
-      'expert': 'ขั้นสูง'
-    };
-    
     html += `
       <div class="border-bottom border-secondary pb-2 mb-2">
-        <div class="fw-bold">${customer.firstName} ${customer.lastName}</div>
-        <small class="text-white-50">${customer.phone}</small><br>
-        <small class="text-info">${levelText[customer.level] || customer.level}</small>
+        <div class="fw-bold">${customer.name}</div>
+        <small class="text-info">${customer.position || ''}</small> || <small class="text-info">${customer.rank || ''}</small>
       </div>
     `;
   });
@@ -79,7 +65,13 @@ function displayCustomerList() {
 
 // Show all customers (placeholder function)
 function showAllCustomers() {
-  alert(`ขณะนี้มีลูกค้าทั้งหมด ${customers.length} คน\n\nฟีเจอร์นี้จะพัฒนาต่อไปในอนาคต`);
+  const tableBody = document.getElementById('customer-table-body');
+  if (ccustomer.length === 0) {
+    alert('ยังไม่มีข้อมูลลูกค้า');
+    return;
+  }
+
+  populateCustomerTable();
 }
 
 // Phone number formatting
@@ -121,4 +113,94 @@ document.addEventListener('DOMContentLoaded', function() {
       input.value = today;
     }
   });
+});
+
+// -- api --
+const STRAPI_URL = 'https://meaningful-cow-f24113ac1c.strapiapp.com'; 
+const SINGLE_TYPE_ENDPOINT = 'customers';
+
+const url = `${STRAPI_URL}/api/${SINGLE_TYPE_ENDPOINT}?populate=*`;
+
+async function fetchCustomerData() {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error fetching customer data:', error);
+        throw error;
+    }
+}
+
+function populateCustomerTable() {
+  const modalBody = document.getElementById('customer-modal-body');
+  modalBody.innerHTML = `
+    <table class="table table-dark table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>ชื่อ</th>
+          <th>รูป</th>
+        </tr>
+      </thead>
+      <tbody id="customer-table-body">
+      </tbody>
+    </table>
+  `;
+
+  const tableBody = document.getElementById('customer-table-body');
+
+  ccustomer.forEach((customer, index) => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${customer.name}</td>
+      <td><img src="${customer.avatar}" alt="Avatar" style="max-height: 50px;"></td>
+    `;
+
+    row.addEventListener('click', () => {
+      document.querySelector('input[name="firstName"]').value = customer.name;
+      document.querySelector('input[name="responsibility"]').value = customer.position;
+      document.querySelector('select[name="level"]').value = customer.rank;
+      document.querySelector('input[name="email"]').value = customer.email;
+      document.querySelector('input[name="phone"]').value = customer.phone;
+      const photoPreview = document.getElementById('photo-preview');
+      photoPreview.src = customer.avatar;
+      photoPreview.style.display = 'block';
+    });
+
+    tableBody.appendChild(row);
+  });
+
+  const customerModal = new bootstrap.Modal(document.getElementById('customerModal'));
+  customerModal.show();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetchCustomerData().then(data => {
+        if (data && data.data) {
+            // Map fetched data to ccustomer array
+            ccustomer = data.data.map(customer => ({
+                id: customer.id,
+                name: customer.Emp_Name,
+                email: customer.Email,
+                phone: customer.Tel,
+                position: customer.Positioin,
+                rank: customer.Rank,
+                avatar: customer.Avatar?.formats?.thumbnail?.url || customer.Avatar?.url || '',
+                createdAt: customer.createdAt
+            }));
+
+            // Display all customers
+            displayCustomerList();
+
+            // Populate the table
+            populateCustomerTable();
+        } else {
+            console.error('No customer data found');
+        }
+    });
 });

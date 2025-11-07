@@ -15,18 +15,8 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
         <a class="navbar-brand fw-bold" href="main.html">🏸 NY Batminton Club</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="main.html">← กลับเมนูหลัก</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="index.html">หน้าแรก</a>
-            </li>
-          </ul>
+        <div class="navbar-nav ms-auto">
+          <a class="nav-link" href="main.html">← กลับเมนูหลัก</a>
         </div>
       </div>
     </nav>
@@ -43,18 +33,26 @@
               <form id="customer-form">
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <label class="form-label">ชื่อ <span class="text-danger">*</span></label>
+                    <label class="form-label mb-2">ชื่อ <span class="text-danger">*</span></label>
                     <input type="text" name="firstName" class="form-control bg-dark text-white border-secondary" placeholder="ชื่อ" required>
+
+                    <label class="form-label mt-3 mb-2">ตำแหน่งรับผิดชอบ</label>
+                    <input type="text" name="responsibility" class="form-control bg-dark text-white border-secondary" placeholder="ตำแหน่งรับผิดชอบ">
                   </div>
                   <div class="col-md-6">
-                    <label class="form-label">นามสกุล <span class="text-danger">*</span></label>
-                    <input type="text" name="lastName" class="form-control bg-dark text-white border-secondary" placeholder="นามสกุล" required>
+                    <label class="form-label">รูป</label>
+                    <div class="border border-secondary rounded p-2 text-center">
+                      <label for="photo-upload">
+                        <img id="photo-preview" src="/img/5897948.png" alt="Preview" class="img-fluid mb-2" style="max-height: 150px; cursor: pointer;">
+                      </label>
+                      <input type="file" id="photo-upload" name="photo" class="d-none" accept="image/*" onchange="previewPhoto(event)">
+                    </div>
                   </div>
                 </div>
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <label class="form-label">เบอร์โทรศัพท์ <span class="text-danger">*</span></label>
-                    <input type="tel" name="phone" class="form-control bg-dark text-white border-secondary" placeholder="08X-XXX-XXXX" required>
+                    <label class="form-label">เบอร์โทรศัพท์</label>
+                    <input type="tel" name="phone" class="form-control bg-dark text-white border-secondary" placeholder="08X-XXX-XXXX">
                   </div>
                   <div class="col-md-6">
                     <label class="form-label">อีเมล</label>
@@ -80,14 +78,6 @@
                       <option value="student">นักเรียน/นักศึกษา</option>
                     </select>
                   </div>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">ที่อยู่</label>
-                  <textarea name="address" class="form-control bg-dark text-white border-secondary" rows="3" placeholder="ที่อยู่"></textarea>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">หมายเหตุ</label>
-                  <textarea name="notes" class="form-control bg-dark text-white border-secondary" rows="2" placeholder="หมายเหตุเพิ่มเติม"></textarea>
                 </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                   <button type="reset" class="btn btn-outline-secondary">ล้างข้อมูล</button>
@@ -135,9 +125,45 @@
     </div>
   </div>
 
+  <!-- Modal for displaying customer data -->
+  <div class="modal fade" id="customerModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content bg-dark text-white">
+        <div class="modal-header">
+          <h5 class="modal-title">รายชื่อลูกค้า</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="customer-modal-body">
+          <!-- Customer data will be populated here -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Bootstrap JS bundle -->
   <script src="js/bootstrap.bundle.min.js"></script>
   <!-- Customer management script -->
   <script src="js/customer.js"></script>
+  <script>
+function previewPhoto(event) {
+  const input = event.target;
+  const preview = document.getElementById('photo-preview');
+
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      preview.src = e.target.result;
+      preview.style.display = 'block';
+    };
+    reader.readAsDataURL(input.files[0]);
+  } else {
+    preview.src = '';
+    preview.style.display = 'none';
+  }
+}
+</script>
 </body>
 </html>
