@@ -31,6 +31,12 @@ function handleCustomerForm(event) {
   displayCustomerList();
 }
 
+document.getElementById('customer-form').addEventListener('reset', () => {
+  const photoPreview = document.getElementById('photo-preview');
+  photoPreview.src = '/img/5897948.png';
+  photoPreview.style.display = 'block';
+});
+
 // Show success modal
 function showSuccessMessage(message) {
   document.getElementById('success-message').textContent = message;
@@ -54,8 +60,7 @@ function displayCustomerList() {
   latestCustomers.forEach(customer => {
     html += `
       <div class="border-bottom border-secondary pb-2 mb-2">
-        <div class="fw-bold">${customer.name}</div>
-        <small class="text-info">${customer.position || ''}</small> || <small class="text-info">${customer.rank || ''}</small>
+        <small class="text-info">${customer.name || ''}</small> || <small class="text-info">${customer.cus_position_name || ''}</small>(<small class="text-info">${customer.rank || ''}</small>)
       </div>
     `;
   });
@@ -123,7 +128,15 @@ const url = `${STRAPI_URL}/api/${SINGLE_TYPE_ENDPOINT}?populate=*`;
 
 async function fetchCustomerData() {
     try {
-        const response = await fetch(url);
+        // Retrieve JWT from cookies
+        const jwt = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
+
+        const response = await fetch(url, {
+            method: 'GET', // Specify GET method explicitly
+            headers: {
+                'Authorization': `Bearer ${jwt}` // Add Bearer token from cookie
+            }
+        });
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -153,6 +166,8 @@ function populateCustomerTable() {
 
   const tableBody = document.getElementById('customer-table-body');
 
+  console.log('ccustomer',ccustomer)
+
   ccustomer.forEach((customer, index) => {
     const row = document.createElement('tr');
     row.innerHTML = `
@@ -163,13 +178,18 @@ function populateCustomerTable() {
 
     row.addEventListener('click', () => {
       document.querySelector('input[name="firstName"]').value = customer.name;
-      document.querySelector('input[name="responsibility"]').value = customer.position;
-      document.querySelector('select[name="level"]').value = customer.rank;
+      document.querySelector('select[name="responsibility"]').value = customer.cus_position_id;
+      document.querySelector('input[name="level"]').value = customer.rank;
       document.querySelector('input[name="email"]').value = customer.email;
       document.querySelector('input[name="phone"]').value = customer.phone;
+      document.querySelector('select[name="memberType"]').value = customer.cus_type_id;
       const photoPreview = document.getElementById('photo-preview');
       photoPreview.src = customer.avatar;
       photoPreview.style.display = 'block';
+
+      // Close the modal popup
+      const customerModal = bootstrap.Modal.getInstance(document.getElementById('customerModal'));
+      customerModal.hide();
     });
 
     tableBody.appendChild(row);
@@ -177,6 +197,69 @@ function populateCustomerTable() {
 
   const customerModal = new bootstrap.Modal(document.getElementById('customerModal'));
   customerModal.show();
+}
+
+async function populateMemberTypes() {
+  const memberTypeSelect = document.getElementById('memberType-select');
+  try {
+    // Retrieve JWT from cookies
+    const jwt = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
+
+    const response = await fetch('https://meaningful-cow-f24113ac1c.strapiapp.com/api/cus-types', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${jwt}` // Add Bearer token from cookie
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch member types');
+    }
+
+    const data = await response.json();
+
+    memberTypeSelect.innerHTML = '<option value="">เลือกประเภทสมาชิก</option>';
+    data.data.forEach(type => {
+      const option = document.createElement('option');
+      option.value = type.id;
+      option.textContent = type.Ctype_name;
+      memberTypeSelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Error loading member types:', error);
+    memberTypeSelect.innerHTML = '<option value="">ไม่สามารถโหลดข้อมูล</option>';
+  }
+}
+
+async function populatePositions() {
+  const positionSelect = document.querySelector('select[name="responsibility"]');
+  try {
+    // Retrieve JWT from cookies
+    const jwt = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
+
+    const response = await fetch('https://meaningful-cow-f24113ac1c.strapiapp.com/api/cus-positions', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${jwt}` // Add Bearer token from cookie
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch positions');
+    }
+
+    const data = await response.json();
+    positionSelect.innerHTML = '<option value="">เลือกตำแหน่ง</option>';
+    data.data.forEach(position => {
+      const option = document.createElement('option');
+      option.value = position.id;
+      option.textContent = position.Cpo_name;
+      positionSelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Error loading positions:', error);
+    positionSelect.innerHTML = '<option value="">ไม่สามารถโหลดข้อมูล</option>';
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -191,7 +274,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 position: customer.Positioin,
                 rank: customer.Rank,
                 avatar: customer.Avatar?.formats?.thumbnail?.url || customer.Avatar?.url || '',
-                createdAt: customer.createdAt
+                createdAt: customer.createdAt,
+                cus_position_id: customer.cus_position.id,
+                cus_position_name: customer.cus_position.Cpo_name,
+                cus_type_id: customer.cus_type.id
             }));
 
             // Display all customers
@@ -203,4 +289,24 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('No customer data found');
         }
     });
+
+    populateMemberTypes();
+    populatePositions();
 });
+
+function previewPhoto(event) {
+  const input = event.target;
+  const preview = document.getElementById('photo-preview');
+
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      preview.src = e.target.result;
+      preview.style.display = 'block';
+    };
+    reader.readAsDataURL(input.files[0]);
+  } else {
+    preview.src = '';
+    preview.style.display = 'none';
+  }
+}

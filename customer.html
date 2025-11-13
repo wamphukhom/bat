@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NY Batminton Club - บันทึกข้อมูลลูกค้า</title>
+  <title>NY Batminton Club - ข้อมูลลูกค้า</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -22,14 +22,13 @@
     </nav>
     
     <div class="container my-5">
-      <h2 class="text-white mb-4">👥 บันทึกข้อมูลลูกค้า</h2>
+      <h2 class="text-white mb-4">👥 ข้อมูลลูกค้า</h2>
       
       <div class="row">
         <!-- Form Section -->
         <div class="col-lg-8">
           <div class="card bg-dark text-white border-primary">
             <div class="card-body">
-              <h5 class="card-title mb-4">เพิ่มลูกค้าใหม่</h5>
               <form id="customer-form">
                 <div class="row mb-3">
                   <div class="col-md-6">
@@ -37,7 +36,9 @@
                     <input type="text" name="firstName" class="form-control bg-dark text-white border-secondary" placeholder="ชื่อ" required>
 
                     <label class="form-label mt-3 mb-2">ตำแหน่งรับผิดชอบ</label>
-                    <input type="text" name="responsibility" class="form-control bg-dark text-white border-secondary" placeholder="ตำแหน่งรับผิดชอบ">
+                    <select name="responsibility" class="form-select bg-dark text-white border-secondary" id="position-select">
+                      <option value="">กำลังโหลด...</option>
+                    </select>
                   </div>
                   <div class="col-md-6">
                     <label class="form-label">รูป</label>
@@ -62,25 +63,18 @@
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <label class="form-label">ระดับการเล่น <span class="text-danger">*</span></label>
-                    <select name="level" class="form-select bg-dark text-white border-secondary" required>
-                      <option value="">เลือกระดับ</option>
-                      <option value="beginner">เริ่มต้น</option>
-                      <option value="intermediate">ปานกลาง</option>
-                      <option value="advanced">ชำนาญ</option>
-                      <option value="expert">ขั้นสูง</option>
-                    </select>
+                    <input type="text" name="level" class="form-control bg-dark text-white border-secondary" placeholder="เลือกระดับ" required>
                   </div>
                   <div class="col-md-6">
                     <label class="form-label">ประเภทสมาชิก</label>
-                    <select name="memberType" class="form-select bg-dark text-white border-secondary">
-                      <option value="regular">สมาชิกทั่วไป</option>
-                      <option value="vip">สมาชิก VIP</option>
-                      <option value="student">นักเรียน/นักศึกษา</option>
+                    <select name="memberType" class="form-select bg-dark text-white border-secondary" id="memberType-select">
+                      <option value="">กำลังโหลด...</option>
                     </select>
                   </div>
                 </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                  <button type="reset" class="btn btn-outline-secondary">ล้างข้อมูล</button>
+                  <button type="reset" class="btn btn-outline-secondary">เพิ่ม</button>
+                  <button type="button" class="btn btn-warning">แก้ไข</button>
                   <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
                 </div>
               </form>
@@ -92,7 +86,7 @@
         <div class="col-lg-4">
           <div class="card bg-dark text-white border-info">
             <div class="card-body">
-              <h5 class="card-title mb-4">รายชื่อลูกค้าล่าสุด</h5>
+              <h5 class="card-title mb-4">รายชื่อลูกค้าปรับปรุงล่าสุด</h5>
               <div id="customer-list">
                 <!-- Customer list will be populated by JavaScript -->
                 <p class="text-white-50 text-center">ยังไม่มีข้อมูลลูกค้า</p>
@@ -147,23 +141,5 @@
   <script src="js/bootstrap.bundle.min.js"></script>
   <!-- Customer management script -->
   <script src="js/customer.js"></script>
-  <script>
-function previewPhoto(event) {
-  const input = event.target;
-  const preview = document.getElementById('photo-preview');
-
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      preview.src = e.target.result;
-      preview.style.display = 'block';
-    };
-    reader.readAsDataURL(input.files[0]);
-  } else {
-    preview.src = '';
-    preview.style.display = 'none';
-  }
-}
-</script>
 </body>
 </html>

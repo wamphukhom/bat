@@ -42,6 +42,13 @@ function handlePOForm(event) {
   alert('บันทึกใบ PO เรียบร้อย');
 }
 
+function handleLogout() {
+  // Clear the JWT cookie
+  document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  alert('คุณได้ออกจากระบบเรียบร้อยแล้ว');
+  window.location.href = 'login.html';
+}
+
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
   // Event listener for the "Let's get start" button
