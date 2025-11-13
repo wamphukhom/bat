@@ -33,7 +33,7 @@ function handleCustomerForm(event) {
 
 document.getElementById('customer-form').addEventListener('reset', () => {
   const photoPreview = document.getElementById('photo-preview');
-  photoPreview.src = '/img/5897948.png';
+  photoPreview.src = 'img/5897948.png';
   photoPreview.style.display = 'block';
 });
 
@@ -306,7 +306,7 @@ function previewPhoto(event) {
     };
     reader.readAsDataURL(input.files[0]);
   } else {
-    preview.src = '';
-    preview.style.display = 'none';
+    preview.src = 'img/5897948.png';
+    preview.style.display = 'block';
   }
 }
