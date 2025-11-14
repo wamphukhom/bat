@@ -32,19 +32,24 @@ async function fetchGSDData() {
 
 // Initialize DataTable with data
 async function initializeDataTable() {
+    console.log('initializeDataTable')
   const gsdData = await fetchGSDData();
+
+  console.log(gsdData);
 
   // Transform data for DataTables
   const tableData = gsdData.map((item, index) => {
     return [
       index + 1,
-      item.Gsd_code || '-',
-      item.Gsd_name || '-',
-      item.Gsd_description || '-',
-      item.Gsd_duration || '-',
-      item.Gsd_type || '-',
-      item.Gsd_status || '-',
-      new Date(item.createdAt).toLocaleDateString('th-TH')
+      item.GSD_code || '-',
+      item.GSD_name || '-',
+      item.GSD_grade || '-',
+      item.GSD_SMV || '-',
+      (item.GSD_SMV || 0) * 60, // Multiply GSD_SMV by 60
+      item.GSD_protype || '-',
+      item.GSD_style || '-',
+    //   new Date(item.createdAt).toLocaleDateString('th-TH')
+      item.GSD_customer || '-'
     ];
   });
 
