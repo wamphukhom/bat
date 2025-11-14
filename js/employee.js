@@ -1,30 +1,25 @@
-let cemployee = [];
+let eemployee = [];
 
 function handleEmployeeForm(event) {
   event.preventDefault();
   
   const formData = new FormData(event.target);
   const employee = {
-    id: Date.now(), // Simple ID generation
-    name: formData.get('name'),
-    email: formData.get('email'),
-    level: formData.get('level'),
-    position: formData.get('position'),
-    createdAt: new Date().toISOString()
+    id: formData.get('id'),
+    empid: formData.get('empId'),
+    position: formData.get('empPosition'),
+    name: formData.get('empName'),
+    phone: formData.get('empPhone'),
+    email: formData.get('empEmail'),
+    type: formData.get('empType')
   };
 
-  cemployee.push(employee);
-
-  localStorage.setItem('employees', JSON.stringify(cemployee));
-  
-  // Show success message
-  showSuccessMessage(`บันทึกข้อมูลพนักงาน ${employee.name} เรียบร้อยแล้ว`);
-  
-  // Reset form
-  event.target.reset();
-  
-  // Update employee list display
-  displayEmployeeList();
+  console.log('handleEmployeeForm',employee)
+  // eemployee.push(employee);
+  // localStorage.setItem('employees', JSON.stringify(eemployee));
+  // showSuccessMessage(`บันทึกข้อมูลพนักงาน ${employee.name} เรียบร้อยแล้ว`);
+  // event.target.reset();
+  // displayEmployeeList();
 }
 
 document.getElementById('employee-form').addEventListener('reset', () => {
@@ -44,13 +39,13 @@ function showSuccessMessage(message) {
 function displayEmployeeList() {
   const employeeListElement = document.getElementById('employee-list');
   
-  if (cemployee.length === 0) {
+  if (eemployee.length === 0) {
     employeeListElement.innerHTML = '<p class="text-white-50 text-center">ยังไม่มีข้อมูลพนักงาน</p>';
     return;
   }
   
   // Show latest 5 employees
-  const latestEmployees = cemployee.slice(-1).reverse();
+  const latestEmployees = eemployee.slice(-1).reverse();
   let html = '';
   
   latestEmployees.forEach(employee => {
@@ -67,7 +62,7 @@ function displayEmployeeList() {
 // Show all employees (placeholder function)
 function showAllEmployees() {
   const tableBody = document.getElementById('employee-table-body');
-  if (cemployee.length === 0) {
+  if (eemployee.length === 0) {
     alert('ยังไม่มีข้อมูลพนักงาน');
     return;
   }
@@ -133,7 +128,7 @@ function populateEmployeeTable() {
 
   const tableBody = document.getElementById('employee-table-body');
 
-  cemployee.forEach((employee, index) => {
+  eemployee.forEach((employee, index) => {
     const row = document.createElement('tr');
     row.innerHTML = `
       <td>${index + 1}</td>
@@ -142,11 +137,13 @@ function populateEmployeeTable() {
     `;
 
     row.addEventListener('click', () => {
-      document.querySelector('input[name="firstName"]').value = employee.name;
-      document.querySelector('select[name="responsibility"]').value = employee.emp_position_id;
-      document.querySelector('input[name="email"]').value = employee.email;
-      document.querySelector('input[name="phone"]').value = employee.phone;
-      document.querySelector('select[name="memberType"]').value = employee.emp_type_id;
+      document.querySelector('input[name="id"]').value = employee.id;
+      document.querySelector('input[name="empId"]').value = employee.emp_id;
+      document.querySelector('input[name="empName"]').value = employee.name;
+      document.querySelector('select[name="empPosition"]').value = employee.emp_position_id;
+      document.querySelector('input[name="empEmail"]').value = employee.email;
+      document.querySelector('input[name="empPhone"]').value = employee.phone;
+      document.querySelector('select[name="empType"]').value = employee.emp_type_id;
       const photoPreview = document.getElementById('photo-preview');
       photoPreview.src = employee.avatar;
       photoPreview.style.display = 'block';
@@ -164,7 +161,7 @@ function populateEmployeeTable() {
 }
 
 async function populateMemberTypes() {
-  const memberTypeSelect = document.getElementById('memberType-select');
+  const empTypeSelect = document.getElementById('empType-select');
   try {
     // Retrieve JWT from cookies
     const jwt = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
@@ -182,21 +179,21 @@ async function populateMemberTypes() {
 
     const data = await response.json();
 
-    memberTypeSelect.innerHTML = '<option value="">เลือกประเภทสมาชิก</option>';
+    empTypeSelect.innerHTML = '<option value="">เลือกประเภทพนักงาน</option>';
     data.data.forEach(type => {
       const option = document.createElement('option');
       option.value = type.id;
       option.textContent = type.Etype_name;
-      memberTypeSelect.appendChild(option);
+      empTypeSelect.appendChild(option);
     });
   } catch (error) {
     console.error('Error loading member types:', error);
-    memberTypeSelect.innerHTML = '<option value="">ไม่สามารถโหลดข้อมูล</option>';
+    empTypeSelect.innerHTML = '<option value="">ไม่สามารถโหลดข้อมูล</option>';
   }
 }
 
 async function populatePositions() {
-  const positionSelect = document.querySelector('select[name="responsibility"]');
+  const empPositionSelect = document.querySelector('select[name="empPosition"]');
   try {
     // Retrieve JWT from cookies
     const jwt = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
@@ -213,16 +210,16 @@ async function populatePositions() {
     }
 
     const data = await response.json();
-    positionSelect.innerHTML = '<option value="">เลือกตำแหน่ง</option>';
+    empPositionSelect.innerHTML = '<option value="">เลือกตำแหน่งงาน</option>';
     data.data.forEach(position => {
       const option = document.createElement('option');
       option.value = position.id;
       option.textContent = position.Epo_name;
-      positionSelect.appendChild(option);
+      empPositionSelect.appendChild(option);
     });
   } catch (error) {
     console.error('Error loading positions:', error);
-    positionSelect.innerHTML = '<option value="">ไม่สามารถโหลดข้อมูล</option>';
+    empPositionSelect.innerHTML = '<option value="">ไม่สามารถโหลดข้อมูล</option>';
   }
 }
 
@@ -257,8 +254,8 @@ function initializeApp() {
   // Fetch and populate data
   fetchEmployeeData().then(data => {
     if (data && data.data) {
-      // Map fetched data to cemployee array
-      cemployee = data.data.map(employee => ({
+      // Map fetched data to eemployee array
+      eemployee = data.data.map(employee => ({
         id: employee.id,
         emp_id: employee.Emp_id,
         name: employee.Emp_name,

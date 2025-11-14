@@ -31,13 +31,25 @@
               <form id="employee-form">
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <label class="form-label mb-2">ชื่อ <span class="text-danger">*</span></label>
-                    <input type="text" name="firstName" class="form-control bg-dark text-white border-secondary" placeholder="ชื่อ" required>
+                    <div class="col-md-12">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <input name="id" type="hidden">
+                          <label class="form-label mt-3 mb-2">รหัสพนักงาน</label>
+                          <input type="text" name="empId" class="form-control bg-dark text-white border-secondary" placeholder="รหัสพนักงาน" readonly>
+                        </div>  
+                        <div class="col-md-6">
+                        <label class="form-label mt-3 mb-2">ตำแหน่ง</label>
+                        <select name="empPosition" class="form-select bg-dark text-white border-secondary">
+                          <option value="">กำลังโหลด...</option>
+                        </select>
+                        </div>
+                      </div>
+                    </div>
 
-                    <label class="form-label mt-3 mb-2">ตำแหน่งรับผิดชอบ</label>
-                    <select name="responsibility" class="form-select bg-dark text-white border-secondary" id="position-select">
-                      <option value="">กำลังโหลด...</option>
-                    </select>
+                    <label class="form-label mt-3 mb-2">ชื่อ <span class="text-danger">*</span></label>
+                    <input type="text" name="empName" class="form-control bg-dark text-white border-secondary" placeholder="ชื่อ" required>
+
                   </div>
                   <div class="col-md-6">
                     <label class="form-label">รูป</label>
@@ -52,25 +64,25 @@
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <label class="form-label">เบอร์โทรศัพท์</label>
-                    <input type="tel" name="phone" class="form-control bg-dark text-white border-secondary" placeholder="08X-XXX-XXXX">
+                    <input type="tel" name="empPhone" class="form-control bg-dark text-white border-secondary" placeholder="08X-XXX-XXXX">
                   </div>
                   <div class="col-md-6">
                     <label class="form-label">อีเมล</label>
-                    <input type="email" name="email" class="form-control bg-dark text-white border-secondary" placeholder="example@email.com">
+                    <input type="email" name="empEmail" class="form-control bg-dark text-white border-secondary" placeholder="example@email.com">
                   </div>
                 </div>
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <label class="form-label">ประเภทสมาชิก</label>
-                    <select name="memberType" class="form-select bg-dark text-white border-secondary" id="memberType-select">
+                    <label class="form-label">ประเภท</label>
+                    <select name="empType" class="form-select bg-dark text-white border-secondary" id="empType-select">
                       <option value="">กำลังโหลด...</option>
                     </select>
                   </div>
                 </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                  <button type="reset" class="btn btn-outline-secondary">เพิ่ม</button>
-                  <button type="button" class="btn btn-warning">แก้ไข</button>
-                  <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
+                  <!-- <button type="reset" class="btn btn-info">เพิ่ม</button>
+                  <button type="button" class="btn btn-secondary">อัพเดทข้อมูล</button>
+                  <button type="submit" class="btn btn-success">บันทึกข้อมูล</button> -->
                 </div>
               </form>
             </div>
