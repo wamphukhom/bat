@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NY Batminton Club - ข้อมูลลูกค้า</title>
+  <title>ศูนย์ฝึกอบรมบุคลากร - ข้อมูลพนักงาน</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <div class="bg-overlay" aria-hidden="true"></div>
 
-  <!-- Customer Management Section -->
+  <!-- Employee Management Section -->
   <div class="site-content">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
-        <a class="navbar-brand fw-bold" href="main.html">🏸 NY Batminton Club</a>
+        <a class="navbar-brand fw-bold" href="main.html">📚 ศูนย์ฝึกอบรมบุคลากร</a>
         <div class="navbar-nav ms-auto">
           <a class="nav-link" href="main.html">← กลับเมนูหลัก</a>
         </div>
@@ -22,14 +22,13 @@
     </nav>
     
     <div class="container my-5">
-      <h2 class="text-white mb-4">👥 ข้อมูลลูกค้า</h2>
+      <h2 class="text-white mb-4">👥 ข้อมูลพนักงาน</h2>
       
       <div class="row">
-        <!-- Form Section -->
         <div class="col-lg-8">
           <div class="card bg-dark text-white border-primary">
             <div class="card-body">
-              <form id="customer-form">
+              <form id="employee-form">
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <label class="form-label mb-2">ชื่อ <span class="text-danger">*</span></label>
@@ -44,7 +43,7 @@
                     <label class="form-label">รูป</label>
                     <div class="border border-secondary rounded p-2 text-center">
                       <label for="photo-upload">
-                        <img id="photo-preview" src="img/5897948.png" alt="Preview" class="img-fluid mb-2" style="max-height: 150px; cursor: pointer;">
+                        <img id="photo-preview" src="img/avatar.jpg" alt="Preview" class="img-fluid mb-2" style="max-height: 150px; cursor: pointer;">
                       </label>
                       <input type="file" id="photo-upload" name="photo" class="d-none" accept="image/*" onchange="previewPhoto(event)">
                     </div>
@@ -62,10 +61,6 @@
                 </div>
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <label class="form-label">ระดับการเล่น <span class="text-danger">*</span></label>
-                    <input type="text" name="level" class="form-control bg-dark text-white border-secondary" placeholder="เลือกระดับ" required>
-                  </div>
-                  <div class="col-md-6">
                     <label class="form-label">ประเภทสมาชิก</label>
                     <select name="memberType" class="form-select bg-dark text-white border-secondary" id="memberType-select">
                       <option value="">กำลังโหลด...</option>
@@ -82,17 +77,16 @@
           </div>
         </div>
         
-        <!-- Customer List Section -->
+        <!-- Employee List Section -->
         <div class="col-lg-4">
           <div class="card bg-dark text-white border-info">
             <div class="card-body">
-              <h5 class="card-title mb-4">รายชื่อลูกค้าปรับปรุงล่าสุด</h5>
-              <div id="customer-list">
-                <!-- Customer list will be populated by JavaScript -->
-                <p class="text-white-50 text-center">ยังไม่มีข้อมูลลูกค้า</p>
+              <h5 class="card-title mb-4">รายชื่อพนักงานปรับปรุงล่าสุด</h5>
+              <div id="employee-list">
+                <p class="text-white-50 text-center">ยังไม่มีข้อมูลพนักงาน</p>
               </div>
               <div class="d-grid mt-3">
-                <button class="btn btn-outline-info btn-sm" onclick="showAllCustomers()">ดูรายชื่อทั้งหมด</button>
+                <button class="btn btn-outline-info btn-sm" onclick="showAllEmployees()">ดูรายชื่อทั้งหมด</button>
               </div>
             </div>
           </div>
@@ -110,7 +104,7 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <p id="success-message">บันทึกข้อมูลลูกค้าเรียบร้อยแล้ว</p>
+          <p id="success-message">บันทึกข้อมูลพนักงานเรียบร้อยแล้ว</p>
         </div>
         <div class="modal-footer border-success">
           <button type="button" class="btn btn-success" data-bs-dismiss="modal">ตกลง</button>
@@ -119,16 +113,15 @@
     </div>
   </div>
 
-  <!-- Modal for displaying customer data -->
-  <div class="modal fade" id="customerModal" tabindex="-1">
+  <!-- Modal for displaying employee data -->
+  <div class="modal fade" id="employeeModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
       <div class="modal-content bg-dark text-white">
         <div class="modal-header">
-          <h5 class="modal-title">รายชื่อลูกค้า</h5>
+          <h5 class="modal-title">รายชื่อพนักงาน</h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body" id="customer-modal-body">
-          <!-- Customer data will be populated here -->
+        <div class="modal-body" id="employee-modal-body">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
@@ -137,9 +130,7 @@
     </div>
   </div>
 
-  <!-- Bootstrap JS bundle -->
   <script src="js/bootstrap.bundle.min.js"></script>
-  <!-- Customer management script -->
-  <script src="js/customer.js"></script>
+  <script src="js/employee.js"></script>
 </body>
 </html>

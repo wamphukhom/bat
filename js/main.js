@@ -23,29 +23,8 @@ function showSection(sectionName) {
   }
 }
 
-// Form submission handlers
-function handleCustomerForm(event) {
-  event.preventDefault();
-  // Add customer form logic here
-  alert('บันทึกข้อมูลลูกค้าเรียบร้อย');
-}
-
-function handleBookingForm(event) {
-  event.preventDefault();
-  // Add booking form logic here
-  alert('บันทึกการจองเรียบร้อย');
-}
-
-function handlePOForm(event) {
-  event.preventDefault();
-  // Add PO form logic here
-  alert('บันทึกใบ PO เรียบร้อย');
-}
-
 function handleLogout() {
-  // Clear the JWT cookie
   document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-  alert('คุณได้ออกจากระบบเรียบร้อยแล้ว');
   window.location.href = 'login.html';
 }
 

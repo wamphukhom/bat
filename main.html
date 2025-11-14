@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NY Batminton Club - ระบบจัดการสโมสร</title>
+  <title>ระบบจัดการศูนย์ฝึกอบรมและพัฒนาบุคลากร</title>
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -15,7 +15,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
         <a class="navbar-brand fw-bold" href="#" onclick="showSection('menu')">
-          🏸 NY Batminton Club
+          📚 ศูนย์ฝึกอบรมบุคลากร
         </a>
         <div class="navbar-nav ms-auto">
           <button class="btn btn-outline-light" onclick="handleLogout()">ออกจากระบบ</button>
@@ -26,16 +26,17 @@
     <div class="container my-5">
       <div id="main-menu" class="row g-4">
         <div class="col-12 text-center mb-4">
-          <h2 class="text-white mb-3">🏸 ระบบจัดการสโมสรแบดมินตัน</h2>
+          <h2 class="text-white mb-3">📚 ระบบจัดการศูนย์ฝึกอบรมและพัฒนาบุคลากร</h2>
         </div>
         
         <div class="col-md-4">
-          <div class="card bg-dark text-white border-primary h-100 menu-card" onclick="window.location.href='customer.html'">
+          <div class="card bg-dark text-white border-primary h-100 menu-card" onclick="window.location.href='employee.html'">
             <div class="card-body text-center p-4">
               <div class="mb-3">
                 <i class="display-4 text-primary">👥</i>
               </div>
-              <h5 class="card-title">ข้อมูลสมาชิก</h5>
+              <h5 class="card-title">ข้อมูลพนักงาน</h5>
+              <p class="card-text">จัดการข้อมูลผู้เข้าอบรม</p>
             </div>
           </div>
         </div>
@@ -44,10 +45,10 @@
           <div class="card bg-dark text-white border-success h-100 menu-card" onclick="showSection('bookings')">
             <div class="card-body text-center p-4">
               <div class="mb-3">
-                <i class="display-4 text-success">🏸</i>
+                <i class="display-4 text-success">📅</i>
               </div>
-              <h5 class="card-title">การลงเล่น</h5>
-              <p class="card-text">จองคอร์ตและบันทึกการเล่น</p>
+              <h5 class="card-title">การลงทะเบียนหลักสูตร</h5>
+              <p class="card-text">จัดการการเข้าอบรม</p>
             </div>
           </div>
         </div>
@@ -56,9 +57,10 @@
           <div class="card bg-dark text-white border-warning h-100 menu-card" onclick="showSection('pos')">
             <div class="card-body text-center p-4">
               <div class="mb-3">
-                <i class="display-4 text-warning">📋</i>
+                <i class="display-4 text-warning">📊</i>
               </div>
-              <h5 class="card-title">ข้อมูลการสั่งซื้อสินค้า</h5>
+              <h5 class="card-title">รายงานผลการอบรม</h5>
+              <p class="card-text">สรุปผลและประเมิน</p>
             </div>
           </div>
         </div>
@@ -78,7 +80,7 @@
     </nav>
     
     <div class="container my-5">
-      <h2 class="text-white mb-4">👥 บันทึกข้อมูลลูกค้า</h2>
+      <h2 class="text-white mb-4">👥 บันทึกข้อมูลพนักงาน</h2>
       <div class="row">
         <div class="col-lg-8">
           <div class="card bg-dark text-white border-primary">
@@ -99,13 +101,13 @@
                   <input type="tel" name="phone" class="form-control bg-dark text-white border-secondary" placeholder="08X-XXX-XXXX" required>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">ระดับการเล่น</label>
+                  <label class="form-label">ระดับทักษะ</label>
                   <select name="level" class="form-select bg-dark text-white border-secondary" required>
                     <option value="">เลือกระดับ</option>
                     <option value="beginner">เริ่มต้น</option>
                     <option value="intermediate">ปานกลาง</option>
                     <option value="advanced">ชำนาญ</option>
-                    <option value="expert">ขั้นสูง</option>
+                    <option value="expert">ผู้เชี่ยวชาญ</option>
                   </select>
                 </div>
                 <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
@@ -121,7 +123,7 @@
   <div id="bookings-section" class="site-content d-none">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
-        <a class="navbar-brand fw-bold" href="#" onclick="showSection('menu')">🏸 NY Batminton Club</a>
+        <a class="navbar-brand fw-bold" href="#" onclick="showSection('menu')">📚 ศูนย์ฝึกอบรมบุคลากร</a>
         <div class="navbar-nav ms-auto">
           <a class="nav-link" href="#" onclick="showSection('menu')">← กลับเมนูหลัก</a>
         </div>
@@ -129,7 +131,7 @@
     </nav>
     
     <div class="container my-5">
-      <h2 class="text-white mb-4">🏸 บันทึกการลงเล่น</h2>
+      <h2 class="text-white mb-4">📅 ลงทะเบียนเข้าอบรม</h2>
       <div class="row">
         <div class="col-lg-8">
           <div class="card bg-dark text-white border-success">
@@ -137,49 +139,45 @@
               <form id="booking-form">
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <label class="form-label">ชื่อผู้เล่น</label>
-                    <input type="text" name="playerName" class="form-control bg-dark text-white border-secondary" placeholder="ชื่อผู้เล่น" required>
+                    <label class="form-label">ชื่อผู้เข้าอบรม</label>
+                    <input type="text" name="playerName" class="form-control bg-dark text-white border-secondary" placeholder="ชื่อพนักงาน" required>
                   </div>
                   <div class="col-md-6">
-                    <label class="form-label">คอร์ต</label>
+                    <label class="form-label">หลักสูตร</label>
                     <select name="court" class="form-select bg-dark text-white border-secondary" required>
-                      <option value="">เลือกคอร์ต</option>
-                      <option value="A">คอร์ต A</option>
-                      <option value="B">คอร์ต B</option>
-                      <option value="C">คอร์ต C</option>
-                      <option value="D">คอร์ต D</option>
+                      <option value="">เลือกหลักสูตร</option>
+                      <option value="A">Leadership & Management</option>
+                      <option value="B">Communication Skills</option>
+                      <option value="C">Digital Marketing</option>
+                      <option value="D">Data Analytics</option>
                     </select>
                   </div>
                 </div>
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <label class="form-label">วันที่</label>
+                    <label class="form-label">วันที่อบรม</label>
                     <input type="date" name="date" class="form-control bg-dark text-white border-secondary" required>
                   </div>
                   <div class="col-md-6">
                     <label class="form-label">เวลา</label>
                     <select name="time" class="form-select bg-dark text-white border-secondary" required>
                       <option value="">เลือกเวลา</option>
-                      <option value="08:00-10:00">08:00 - 10:00</option>
-                      <option value="10:00-12:00">10:00 - 12:00</option>
-                      <option value="14:00-16:00">14:00 - 16:00</option>
-                      <option value="16:00-18:00">16:00 - 18:00</option>
-                      <option value="18:00-20:00">18:00 - 20:00</option>
+                      <option value="08:00-10:00">08:00 - 12:00</option>
+                      <option value="10:00-12:00">13:00 - 17:00</option>
+                      <option value="14:00-16:00">08:00 - 17:00 (Full Day)</option>
                     </select>
                   </div>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">ประเภทการเล่น</label>
+                  <label class="form-label">ประเภทการอบรม</label>
                   <select name="gameType" class="form-select bg-dark text-white border-secondary" required>
                     <option value="">เลือกประเภท</option>
-                    <option value="men-single">เดี่ยวชาย</option>
-                    <option value="women-single">เดี่ยวหญิง</option>
-                    <option value="men-double">คู่ชาย</option>
-                    <option value="women-double">คู่หญิง</option>
-                    <option value="mixed-double">คู่ผสม</option>
+                    <option value="men-single">Online</option>
+                    <option value="women-single">Onsite</option>
+                    <option value="men-double">Hybrid</option>
                   </select>
                 </div>
-                <button type="submit" class="btn btn-success">บันทึกการจอง</button>
+                <button type="submit" class="btn btn-success">ลงทะเบียน</button>
               </form>
             </div>
           </div>
@@ -192,7 +190,7 @@
   <div id="pos-section" class="site-content d-none">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
-        <a class="navbar-brand fw-bold" href="#" onclick="showSection('menu')">🏸 NY Batminton Club</a>
+        <a class="navbar-brand fw-bold" href="#" onclick="showSection('menu')">📚 ศูนย์ฝึกอบรมบุคลากร</a>
         <div class="navbar-nav ms-auto">
           <a class="nav-link" href="#" onclick="showSection('menu')">← กลับเมนูหลัก</a>
         </div>
@@ -200,7 +198,7 @@
     </nav>
     
     <div class="container my-5">
-      <h2 class="text-white mb-4">📋 บันทึกใบ PO</h2>
+      <h2 class="text-white mb-4">📊 รายงานผลการอบรม</h2>
       <div class="row">
         <div class="col-lg-10">
           <div class="card bg-dark text-white border-warning">
@@ -208,29 +206,32 @@
               <form id="po-form">
                 <div class="row mb-3">
                   <div class="col-md-6">
-                    <label class="form-label">เลขที่ PO</label>
-                    <input type="text" name="poNumber" class="form-control bg-dark text-white border-secondary" placeholder="PO-2025-001" required>
+                    <label class="form-label">รหัสรายงาน</label>
+                    <input type="text" name="poNumber" class="form-control bg-dark text-white border-secondary" placeholder="RPT-2025-001" required>
                   </div>
                   <div class="col-md-6">
-                    <label class="form-label">วันที่สั่งซื้อ</label>
+                    <label class="form-label">วันที่รายงาน</label>
                     <input type="date" name="orderDate" class="form-control bg-dark text-white border-secondary" required>
                   </div>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">ชื่อซัพพลายเออร์</label>
-                  <input type="text" name="supplier" class="form-control bg-dark text-white border-secondary" placeholder="บริษัท อุปกรณ์กีฬา จำกัด" required>
+                  <label class="form-label">ชื่อหลักสูตร</label>
+                  <input type="text" name="supplier" class="form-control bg-dark text-white border-secondary" placeholder="ชื่อหลักสูตรที่อบรม" required>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">รายการสินค้า</label>
+                  <label class="form-label">ผลการประเมิน</label>
                   <div class="row g-2 mb-2">
                     <div class="col-md-5">
-                      <input type="text" name="itemName" class="form-control bg-dark text-white border-secondary" placeholder="ชื่อสินค้า (เช่น ไม้แบด Yonex)">
+                      <input type="text" name="itemName" class="form-control bg-dark text-white border-secondary" placeholder="หัวข้อการประเมิน">
                     </div>
                     <div class="col-md-2">
-                      <input type="number" name="quantity" class="form-control bg-dark text-white border-secondary" placeholder="จำนวน">
+                      <input type="number" name="quantity" class="form-control bg-dark text-white border-secondary" placeholder="คะแนน" max="100">
                     </div>
                     <div class="col-md-3">
-                      <input type="number" name="price" class="form-control bg-dark text-white border-secondary" placeholder="ราคาต่อชิ้น" step="0.01">
+                      <select class="form-select bg-dark text-white border-secondary">
+                        <option>ผ่าน</option>
+                        <option>ไม่ผ่าน</option>
+                      </select>
                     </div>
                     <div class="col-md-2">
                       <button type="button" class="btn btn-outline-warning btn-sm w-100">เพิ่ม</button>
@@ -238,10 +239,10 @@
                   </div>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">หมายเหตุ</label>
-                  <textarea name="notes" class="form-control bg-dark text-white border-secondary" rows="3" placeholder="หมายเหตุเพิ่มเติม"></textarea>
+                  <label class="form-label">สรุปผล</label>
+                  <textarea name="notes" class="form-control bg-dark text-white border-secondary" rows="3" placeholder="สรุปผลการอบรมและข้อเสนอแนะ"></textarea>
                 </div>
-                <button type="submit" class="btn btn-warning">บันทึกใบ PO</button>
+                <button type="submit" class="btn btn-warning">บันทึกรายงาน</button>
               </form>
             </div>
           </div>
