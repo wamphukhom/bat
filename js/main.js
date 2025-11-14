@@ -3,16 +3,13 @@
 // JavaScript for navigation between sections
 function showSection(sectionName) {
   // Hide all sections
-  document.getElementById('hero-section').classList.add('d-none');
   document.getElementById('menu-section').classList.add('d-none');
   document.getElementById('customers-section').classList.add('d-none');
   document.getElementById('bookings-section').classList.add('d-none');
   document.getElementById('pos-section').classList.add('d-none');
   
   // Show the requested section
-  if (sectionName === 'hero') {
-    document.getElementById('hero-section').classList.remove('d-none');
-  } else if (sectionName === 'menu') {
+  if (sectionName === 'menu') {
     document.getElementById('menu-section').classList.remove('d-none');
   } else if (sectionName === 'customers') {
     document.getElementById('customers-section').classList.remove('d-none');

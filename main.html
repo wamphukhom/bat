@@ -42,13 +42,13 @@
         </div>
         
         <div class="col-md-4">
-          <div class="card bg-dark text-white border-success h-100 menu-card" onclick="showSection('bookings')">
+          <div class="card bg-dark text-white border-success h-100 menu-card" onclick="window.location.href='gsd.html'">
             <div class="card-body text-center p-4">
               <div class="mb-3">
                 <i class="display-4 text-success">📅</i>
               </div>
-              <h5 class="card-title">การลงทะเบียนหลักสูตร</h5>
-              <p class="card-text">จัดการการเข้าอบรม</p>
+              <h5 class="card-title">ข้อมูลหลักสูตร</h5>
+              <p class="card-text">แสดงข้อมูลหลักสูตรทั้งหมด</p>
             </div>
           </div>
         </div>
@@ -68,59 +68,8 @@
     </div>
   </div>
 
-  <!-- Customer Management Section -->
-  <div id="customers-section" class="site-content d-none">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand fw-bold" href="#" onclick="showSection('menu')">🏸 NY Batminton Club</a>
-        <div class="navbar-nav ms-auto">
-          <a class="nav-link" href="#" onclick="showSection('menu')">← กลับเมนูหลัก</a>
-        </div>
-      </div>
-    </nav>
-    
-    <div class="container my-5">
-      <h2 class="text-white mb-4">👥 บันทึกข้อมูลพนักงาน</h2>
-      <div class="row">
-        <div class="col-lg-8">
-          <div class="card bg-dark text-white border-primary">
-            <div class="card-body">
-              <form id="customer-form">
-                <div class="row mb-3">
-                  <div class="col-md-6">
-                    <label class="form-label">ชื่อ</label>
-                    <input type="text" name="firstName" class="form-control bg-dark text-white border-secondary" placeholder="ชื่อ" required>
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label">นามสกุล</label>
-                    <input type="text" name="lastName" class="form-control bg-dark text-white border-secondary" placeholder="นามสกุล" required>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">เบอร์โทรศัพท์</label>
-                  <input type="tel" name="phone" class="form-control bg-dark text-white border-secondary" placeholder="08X-XXX-XXXX" required>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">ระดับทักษะ</label>
-                  <select name="level" class="form-select bg-dark text-white border-secondary" required>
-                    <option value="">เลือกระดับ</option>
-                    <option value="beginner">เริ่มต้น</option>
-                    <option value="intermediate">ปานกลาง</option>
-                    <option value="advanced">ชำนาญ</option>
-                    <option value="expert">ผู้เชี่ยวชาญ</option>
-                  </select>
-                </div>
-                <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Booking Management Section -->
-  <div id="bookings-section" class="site-content d-none">
+  <!-- GSD Management Section -->
+  <div id="gsd-section" class="site-content d-none">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
         <a class="navbar-brand fw-bold" href="#" onclick="showSection('menu')">📚 ศูนย์ฝึกอบรมบุคลากร</a>

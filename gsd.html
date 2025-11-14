@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ศูนย์ฝึกอบรมบุคลากร - ข้อมูลหลักสูตร</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+</head>
+<body>
+  <div class="bg-overlay" aria-hidden="true"></div>
+
+  <!-- GSD Management Section -->
+  <div class="site-content">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="main.html">📚 ศูนย์ฝึกอบรมบุคลากร</a>
+        <div class="navbar-nav ms-auto">
+          <a class="nav-link" href="main.html">← กลับเมนูหลัก</a>
+        </div>
+      </div>
+    </nav>
+    
+    <div class="container my-5">
+      <h2 class="text-white mb-4">📅 ข้อมูลหลักสูตร</h2>
+      
+      <div class="row">
+        <div class="col-12">
+          <div class="card bg-dark text-white border-success">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table id="gsd-table" class="table table-dark table-striped table-hover" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>รหัสหลักสูตร</th>
+                      <th>ชื่อหลักสูตร</th>
+                      <th>รายละเอียด</th>
+                      <th>ระยะเวลา (วัน)</th>
+                      <th>ประเภท</th>
+                      <th>สถานะ</th>
+                      <th>วันที่สร้าง</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Data will be populated by DataTables -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS bundle -->
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <!-- jQuery (required for DataTables) -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <!-- DataTables JS -->
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+  <!-- GSD script -->
+  <script src="js/gsd.js"></script>
+</body>
+</html>

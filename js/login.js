@@ -8,7 +8,6 @@ async function handleLogin() {
   const password = document.getElementById('password').value;
 
   const STRAPI_URL = 'https://meaningful-cow-f24113ac1c.strapiapp.com'; // Directly include the URL
-
   const url = `${STRAPI_URL}/api/auth/local`;
 
   try {
@@ -25,11 +24,9 @@ async function handleLogin() {
     }
 
     const data = await response.json();
-
-    console.log(data);
     setCookie('jwt', data.jwt, 7);
-
     window.location.href = 'main.html';
+
   } catch (error) {
     console.error('Error during login:', error);
     alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
