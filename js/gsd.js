@@ -1,14 +1,11 @@
-// GSD (Course) Management Script
 const STRAPI_URL = 'https://meaningful-cow-f24113ac1c.strapiapp.com';
 const GSD_ENDPOINT = 'gsds'; // Change this to match your Strapi collection name
 
-// Initialize DataTable
 let gsdTable;
 
-// Fetch GSD data from Strapi
 async function fetchGSDData() {
   try {
-    // Retrieve JWT from cookies
+    showLoading();
     const jwt = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
 
     const response = await fetch(`${STRAPI_URL}/api/${GSD_ENDPOINT}?populate=*`, {
@@ -27,17 +24,14 @@ async function fetchGSDData() {
   } catch (error) {
     console.error('Error fetching GSD data:', error);
     return [];
+  } finally {
+    hideLoading();
   }
 }
 
-// Initialize DataTable with data
 async function initializeDataTable() {
-    console.log('initializeDataTable')
   const gsdData = await fetchGSDData();
 
-  console.log(gsdData);
-
-  // Transform data for DataTables
   const tableData = gsdData.map((item, index) => {
     return [
       index + 1,
@@ -45,19 +39,17 @@ async function initializeDataTable() {
       item.GSD_name || '-',
       item.GSD_grade || '-',
       item.GSD_SMV || '-',
-      (item.GSD_SMV || 0) * 60, // Multiply GSD_SMV by 60
+      (item.GSD_SMV || 0) * 60,
       item.GSD_protype || '-',
       item.GSD_style || '-',
-    //   new Date(item.createdAt).toLocaleDateString('th-TH')
       item.GSD_customer || '-'
     ];
   });
 
-  // Initialize DataTable
   gsdTable = $('#gsd-table').DataTable({
     data: tableData,
     language: {
-      url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/th.json',
+      url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/th.json',
       emptyTable: 'ไม่มีข้อมูลในตาราง',
       info: 'แสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ',
       infoEmpty: 'แสดง 0 ถึง 0 จาก 0 รายการ',
@@ -92,9 +84,7 @@ async function initializeDataTable() {
   });
 }
 
-// Initialize the application
 function initializeApp() {
-  // Check if user is logged in
   const jwt = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
   
   if (!jwt) {
@@ -102,11 +92,19 @@ function initializeApp() {
     return;
   }
 
-  // Initialize DataTable
   initializeDataTable();
 }
 
-// Call initialization when DOM is ready
-$(document).ready(function() {
-  initializeApp();
-});
+document.addEventListener('DOMContentLoaded', initializeApp);
+
+function showLoading() {
+  const loadingElement = document.getElementById('loadingOverlay');
+  loadingElement.classList.remove('hidden');
+}
+
+function hideLoading() {
+  const loadingElement = document.getElementById('loadingOverlay');
+  setTimeout(() => {
+      loadingElement.classList.add('hidden');
+  }, 100); // ระยะเวลา transition ใน CSS
+}

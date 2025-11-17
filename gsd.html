@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="css/styles.css">
   <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" href="css/loading.css">
 </head>
 <body>
   <div class="bg-overlay" aria-hidden="true"></div>
@@ -16,7 +17,8 @@
   <div class="site-content">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
-        <a class="navbar-brand fw-bold" href="main.html">📚 ศูนย์ฝึกอบรมบุคลากร</a>
+        <a class="navbar-brand fw-bold" href="main.html">
+      <img src="img/logo.png" alt="Logo" class="rounded-circle" style="max-width: 30px;"> ศูนย์ฝึกอบรมบุคลากร</a>
         <div class="navbar-nav ms-auto">
           <a class="nav-link" href="main.html">← กลับเมนูหลัก</a>
         </div>
@@ -26,6 +28,7 @@
     <div class="container my-5">
       <h2 class="text-white mb-4">📅 ข้อมูลหลักสูตร</h2>
       
+     
       <div class="row">
         <div class="col-12">
           <div class="card bg-dark text-white border-success">
@@ -46,7 +49,6 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <!-- Data will be populated by DataTables -->
                   </tbody>
                 </table>
               </div>
@@ -57,14 +59,15 @@
     </div>
   </div>
 
-  <!-- Bootstrap JS bundle -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="loading-spinner"></div>
+  </div>
+
   <script src="js/bootstrap.bundle.min.js"></script>
-  <!-- jQuery (required for DataTables) -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <!-- DataTables JS -->
   <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
-  <!-- GSD script -->
   <script src="js/gsd.js"></script>
+
 </body>
 </html>

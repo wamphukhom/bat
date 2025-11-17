@@ -1,0 +1,42 @@
+/* CSS สำหรับ Loading Spinner */
+.loading-overlay {
+    /* ทำให้ครอบคลุมทั้งหน้าจอ */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8); /* พื้นหลังโปร่งแสงสีขาว */
+    display: flex; /* จัดให้อยู่ตรงกลาง */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* ให้ icon อยู่เหนือองค์ประกอบอื่น */
+    transition: opacity 0.3s ease; /* เพิ่มความนุ่มนวลในการเปลี่ยน */
+}
+
+.loading-spinner {
+    border: 4px solid #f3f3f3; /* Light grey */
+    border-top: 4px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite; /* ใช้ animation ชื่อ spin */
+}
+
+/* Animation Keyframes */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* คลาสสำหรับซ่อน */
+.hidden {
+    display: none !important;
+}
+
+/* สไตล์สำหรับเนื้อหาหลัก (ตัวอย่าง) */
+.content {
+    padding: 20px;
+    text-align: center;
+    font-family: sans-serif;
+}
