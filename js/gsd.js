@@ -1,5 +1,5 @@
 const STRAPI_URL = 'https://meaningful-cow-f24113ac1c.strapiapp.com';
-const GSD_ENDPOINT = 'gsds'; // Change this to match your Strapi collection name
+const GSD_ENDPOINT = 'gsds';
 
 let gsdTable;
 

@@ -15,7 +15,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
         <a class="navbar-brand fw-bold" href="#" onclick="showSection('menu')">
-      <img src="img/logo.png" alt="Logo" class="rounded-circle" style="max-width: 30px;"> ศูนย์ฝึกอบรมบุคลากร
+          <img src="img/logo.png" alt="Logo" class="rounded-circle" style="max-width: 30px;"> ศูนย์ฝึกอบรมบุคลากร
         </a>
         <div class="navbar-nav ms-auto">
           <button class="btn btn-outline-light" onclick="handleLogout()">ออกจากระบบ</button>
@@ -36,7 +36,6 @@
                 <i class="display-4 text-primary">👥</i>
               </div>
               <h5 class="card-title">ข้อมูลพนักงาน</h5>
-              <p class="card-text">จัดการข้อมูลผู้เข้าอบรม</p>
             </div>
           </div>
         </div>
@@ -48,156 +47,20 @@
                 <i class="display-4 text-success">📅</i>
               </div>
               <h5 class="card-title">ข้อมูลหลักสูตร</h5>
-              <p class="card-text">แสดงข้อมูลหลักสูตรทั้งหมด</p>
             </div>
           </div>
         </div>
         
         <div class="col-md-4">
-          <div class="card bg-dark text-white border-warning h-100 menu-card" onclick="showSection('pos')">
+          <div class="card bg-dark text-white border-warning h-100 menu-card" onclick="window.location.href='training_record.html'">
             <div class="card-body text-center p-4">
               <div class="mb-3">
                 <i class="display-4 text-warning">📊</i>
               </div>
-              <h5 class="card-title">รายงานผลการอบรม</h5>
-              <p class="card-text">สรุปผลและประเมิน</p>
+              <h5 class="card-title">บันทึกการฝึกอบรม</h5>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- GSD Management Section -->
-  <div id="gsd-section" class="site-content d-none">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand fw-bold" href="main.html">
-      <img src="img/logo.png" alt="Logo" class="rounded-circle" style="max-width: 30px;"> ศูนย์ฝึกอบรมบุคลากร</a>
-        <div class="navbar-nav ms-auto">
-          <a class="nav-link" href="#" onclick="showSection('menu')">← กลับเมนูหลัก</a>
-        </div>
-      </div>
-    </nav>
-    
-    <div class="container my-5">
-      <h2 class="text-white mb-4">📅 ลงทะเบียนเข้าอบรม</h2>
-      <div class="row">
-        <div class="col-lg-8">
-          <div class="card bg-dark text-white border-success">
-            <div class="card-body">
-              <form id="booking-form">
-                <div class="row mb-3">
-                  <div class="col-md-6">
-                    <label class="form-label">ชื่อผู้เข้าอบรม</label>
-                    <input type="text" name="playerName" class="form-control bg-dark text-white border-secondary" placeholder="ชื่อพนักงาน" required>
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label">หลักสูตร</label>
-                    <select name="court" class="form-select bg-dark text-white border-secondary" required>
-                      <option value="">เลือกหลักสูตร</option>
-                      <option value="A">Leadership & Management</option>
-                      <option value="B">Communication Skills</option>
-                      <option value="C">Digital Marketing</option>
-                      <option value="D">Data Analytics</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <div class="col-md-6">
-                    <label class="form-label">วันที่อบรม</label>
-                    <input type="date" name="date" class="form-control bg-dark text-white border-secondary" required>
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label">เวลา</label>
-                    <select name="time" class="form-select bg-dark text-white border-secondary" required>
-                      <option value="">เลือกเวลา</option>
-                      <option value="08:00-10:00">08:00 - 12:00</option>
-                      <option value="10:00-12:00">13:00 - 17:00</option>
-                      <option value="14:00-16:00">08:00 - 17:00 (Full Day)</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">ประเภทการอบรม</label>
-                  <select name="gameType" class="form-select bg-dark text-white border-secondary" required>
-                    <option value="">เลือกประเภท</option>
-                    <option value="men-single">Online</option>
-                    <option value="women-single">Onsite</option>
-                    <option value="men-double">Hybrid</option>
-                  </select>
-                </div>
-                <button type="submit" class="btn btn-success">ลงทะเบียน</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PO Management Section -->
-  <div id="pos-section" class="site-content d-none">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand fw-bold" href="main.html">
-      <img src="img/logo.png" alt="Logo" class="rounded-circle" style="max-width: 30px;"> ศูนย์ฝึกอบรมบุคลากร</a>
-        <div class="navbar-nav ms-auto">
-          <a class="nav-link" href="#" onclick="showSection('menu')">← กลับเมนูหลัก</a>
-        </div>
-      </div>
-    </nav>
-    
-    <div class="container my-5">
-      <h2 class="text-white mb-4">📊 รายงานผลการอบรม</h2>
-      <div class="row">
-        <div class="col-lg-10">
-          <div class="card bg-dark text-white border-warning">
-            <div class="card-body">
-              <form id="po-form">
-                <div class="row mb-3">
-                  <div class="col-md-6">
-                    <label class="form-label">รหัสรายงาน</label>
-                    <input type="text" name="poNumber" class="form-control bg-dark text-white border-secondary" placeholder="RPT-2025-001" required>
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label">วันที่รายงาน</label>
-                    <input type="date" name="orderDate" class="form-control bg-dark text-white border-secondary" required>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">ชื่อหลักสูตร</label>
-                  <input type="text" name="supplier" class="form-control bg-dark text-white border-secondary" placeholder="ชื่อหลักสูตรที่อบรม" required>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">ผลการประเมิน</label>
-                  <div class="row g-2 mb-2">
-                    <div class="col-md-5">
-                      <input type="text" name="itemName" class="form-control bg-dark text-white border-secondary" placeholder="หัวข้อการประเมิน">
-                    </div>
-                    <div class="col-md-2">
-                      <input type="number" name="quantity" class="form-control bg-dark text-white border-secondary" placeholder="คะแนน" max="100">
-                    </div>
-                    <div class="col-md-3">
-                      <select class="form-select bg-dark text-white border-secondary">
-                        <option>ผ่าน</option>
-                        <option>ไม่ผ่าน</option>
-                      </select>
-                    </div>
-                    <div class="col-md-2">
-                      <button type="button" class="btn btn-outline-warning btn-sm w-100">เพิ่ม</button>
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">สรุปผล</label>
-                  <textarea name="notes" class="form-control bg-dark text-white border-secondary" rows="3" placeholder="สรุปผลการอบรมและข้อเสนอแนะ"></textarea>
-                </div>
-                <button type="submit" class="btn btn-warning">บันทึกรายงาน</button>
-              </form>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
