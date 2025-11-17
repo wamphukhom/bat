@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRAINER CSA G1&G3 BI DASHBOARD - OVERVIEW</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background-color: #0e4d5d;
+      font-family: Arial, sans-serif;
+    }
+    .dashboard-header {
+      background-color: #0e4d5d;
+      color: white;
+      padding: 10px 0;
+      border-bottom: 3px solid #17a2b8;
+    }
+    .sidebar {
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      max-height: calc(100vh - 150px);
+      overflow-y: auto;
+    }
+    .sidebar h6 {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
+    }
+    .kpi-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .kpi-value {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #0e4d5d;
+    }
+    .kpi-label {
+      font-size: 1rem;
+      color: #666;
+      margin-top: 10px;
+    }
+    .chart-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .chart-card canvas {
+      max-height: 210px;
+    }
+    .chart-title {
+      font-weight: bold;
+      color: #0e4d5d;
+      margin-bottom: 15px;
+    }
+    .info-card {
+      background-color: #17a2b8;
+      color: white;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+    }
+    .info-card h5 {
+      background-color: rgba(255,255,255,0.2);
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+    .info-value {
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <!-- Dashboard Header -->
+  <div class="dashboard-header">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col">
+          <h2 class="mb-0">TRAINER CSA G1&G3 BI DASHBOARD - OVERVIEW</h2>
+        </div>
+        <div class="col-auto">
+            <img src="img/logo.png" alt="Logo" class="rounded-circle" style="max-width: 50px;"> 
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container-fluid mt-3">
+    <div class="row">
+      <!-- Sidebar Filters -->
+      <div class="col-md-2">
+        <div class="sidebar">
+          <div class="mb-4">
+            <h6>TrainDate</h6>
+            <input type="date" class="form-control form-control-sm mb-2" id="trainDateStart" value="2025-11-05">
+            <input type="date" class="form-control form-control-sm" id="trainDateEnd" value="2025-11-13">
+          </div>
+
+          <div class="mb-4">
+            <h6>Trainer Name</h6>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="trainer1" checked>
+              <label class="form-check-label" for="trainer1">เจียม วงศ์แดง</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="trainer2" checked>
+              <label class="form-check-label" for="trainer2">ชนานันท์ จันเย็น</label>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <h6>Customer</h6>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="customer1" checked>
+              <label class="form-check-label" for="customer1">TOMMY BAHAMA</label>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <h6>Sty</h6>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="sty1">
+              <label class="form-check-label" for="sty1">261ST227999</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="sty2">
+              <label class="form-check-label" for="sty2">261ST228003</label>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <h6>Operation</h6>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="op1">
+              <label class="form-check-label" for="op1">000 QL Trim collar band at center...</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="op2">
+              <label class="form-check-label" for="op2">301 DN (S12) Att bk pk tape fold...</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="op3">
+              <label class="form-check-label" for="op3">301 SN (S12) Att bk nk tape fold...</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="op4">
+              <label class="form-check-label" for="op4">301 SN (S12) Close band head...</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="op5">
+              <label class="form-check-label" for="op5">301 SN (S12) Close collar 45cm...</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Dashboard -->
+      <div class="col-md-10">
+        <!-- KPI Cards -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-3">
+            <div class="kpi-card">
+              <div class="kpi-value">2</div>
+              <div class="kpi-label">Trainer Count</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="kpi-card">
+              <div class="kpi-value">67.79</div>
+              <div class="kpi-label">Avg Performance</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="kpi-card">
+              <div class="kpi-value">100.00</div>
+              <div class="kpi-label">Avg Quality</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="kpi-card">
+              <div class="kpi-value">13</div>
+              <div class="kpi-label">Operation Count (by Trainer)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Row 1 -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <div class="chart-card">
+              <div class="chart-title">Top 5 Trainer by Performance</div>
+              <canvas id="trainerPerformanceChart"></canvas>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="chart-card">
+              <div class="chart-title">Avg Performance by Skills Grade</div>
+              <canvas id="skillsGradeChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Row 2 -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <div class="chart-card">
+              <div class="chart-title">Cycle Time VS SMV by Operation</div>
+              <canvas id="cycleTimeChart"></canvas>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row g-3">
+              <div class="col-6">
+                <div class="info-card">
+                  <h5>"Best Trainer"</h5>
+                  <div class="info-value">เจียม<br>วงศ์แดง</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="row">
+                    <div class="info-card">
+                    <h5>"Best Performance (%)"</h5>
+                    <div class="info-value">75</div>
+                    </div>
+                </div>
+                <div class="row">   
+                    <div class="info-card">
+                    <h5>"Best Operation"</h5>
+                    <div style="font-size: 1rem;">301 SN (S12) Trim collar band head & TS at center 45cmเจียนหัวปกเซ็ต+ยับตัวกลางจุ...</div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS bundle -->
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/training_dashboard.js"></script>
+</body>
+</html>
