@@ -195,29 +195,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Generate random data for Avg Cycle Time based on SMV
+  function generateRandomCycleTimeData(smvData) {
+    return smvData.map(smv => {
+      const variation = Math.random() * 20 - 10; // Random variation between -10 and +10
+      return smv + variation;
+    });
+  }
+
+  // Adjust SMV line to appear in front of the bars
+  const smvData = [34.8, 34.8, 34.8, 34.8, 34.8, 34.8, 34.8, 34.8, 34.8, 34.8, 34.8];
+  const cycleTimeData = generateRandomCycleTimeData(smvData);
+
   // Cycle Time VS SMV by Operation Chart
   const cycleTimeCtx = document.getElementById('cycleTimeChart').getContext('2d');
   new Chart(cycleTimeCtx, {
     type: 'bar',
     data: {
-      labels: ['ขัดผิด', 'เช็ด น.', '301 I.L.', '301 S.', '006 I.L.', '301 S.', '301 S.', '305 I.L.', '519 O.L.', '602 I.L.', '301 S.', '301 R.', '1000 O.L.', '301 S.', '301 S.', '301 S.', '301 S.', '301 S.', '301 S.'],
+      labels: ['10/11/68', '11/11/68', '12/11/68', '13/11/68', '14/11/68', '15/11/68', '16/11/68', '17/11/68', '18/11/68', '19/11/68', '20/11/68'],
       datasets: [
         {
           label: 'Avg Cycle Time (sec)',
-          data: [320, 180, 120, 100, 95, 90, 85, 80, 75, 70, 65, 60, 55, 50, 48, 45, 43, 40, 38],
+          data: cycleTimeData,
           backgroundColor: '#007bff',
           borderColor: '#007bff',
           borderWidth: 1,
-          yAxisID: 'y'
+          yAxisID: 'y',
+          order: 2 // Ensure bars are drawn behind the SMV line
         },
         {
-          label: 'Avg SMV (sec)',
-          data: [20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 75, 70, 65, 60, 55, 50],
+          label: 'Avg SMV (34.8 sec)',
+          data: smvData,
           type: 'line',
-          borderColor: '#0056b3',
+          borderColor: '#ff0000', // Change SMV line color to red
           backgroundColor: 'transparent',
           borderWidth: 2,
-          yAxisID: 'y1'
+          yAxisID: 'y1',
+          order: 1 // Ensure SMV line is drawn in front of the bars
         }
       ]
     },
@@ -234,6 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
           display: true,
           position: 'left',
           beginAtZero: true,
+          max: Math.max(...cycleTimeData) + 10, // Add space above the highest value
           title: {
             display: true,
             text: 'Avg Cycle Time (sec)'
@@ -244,6 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
           display: true,
           position: 'right',
           beginAtZero: true,
+          max: Math.max(...smvData) + 10, // Add space above the SMV line
           title: {
             display: true,
             text: 'Avg SMV (sec)'
