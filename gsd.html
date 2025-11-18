@@ -9,6 +9,12 @@
   <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
   <link rel="stylesheet" href="css/loading.css">
+  <style>
+    table {
+      width: 100%; /* Expand table width to full container */
+      height: auto; /* Set height to auto for dynamic content */
+    }
+  </style>
 </head>
 <body>
   <div class="bg-overlay" aria-hidden="true"></div>
@@ -25,13 +31,12 @@
       </div>
     </nav>
     
-    <div class="container my-5">
-      <h2 class="text-white mb-4">📅 ข้อมูลหลักสูตร</h2>
+    <div class="m-4">
+      <h2 class="text-white text-center mb-4">📅 ข้อมูลหลักสูตร</h2>
       
-     
       <div class="row">
         <div class="col-12">
-          <div class="card bg-dark text-white border-success">
+          <div class="card bg-dark text-white">
             <div class="card-body">
               <div class="table-responsive">
                 <table id="gsd-table" class="table table-dark table-striped table-hover" style="width:100%">

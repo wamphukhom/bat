@@ -135,6 +135,7 @@ function populateEmployeeTable() {
       <td>${employee.name}</td>
       <td><img src="${employee.avatar}" alt="Avatar" style="max-height: 50px;"></td>
     `;
+    row.style.cursor = 'pointer';
 
     row.addEventListener('click', () => {
       document.querySelector('input[name="id"]').value = employee.id;
