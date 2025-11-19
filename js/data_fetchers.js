@@ -67,11 +67,10 @@ async function fetchGSDData() {
 }
 
 async function fetchTrainData(emp_id, gsd_code) {
-    console.log(emp_id, gsd_code);
     try {
         const jwt = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
 
-        const response = await fetch(`${STRAPI_URL}/api/trainings?temp_id=${emp_id}&tgsd_code=${gsd_code}&populate=*`, {
+        const response = await fetch(`${STRAPI_URL}/api/trainings?filters[Temp_id][Emp_id][$eq]=${emp_id}&filters[Tgsd_id][GSD_code][$eq]=${gsd_code}&populate=*`, {
             headers: {
                 Authorization: `Bearer ${jwt}`
             }
@@ -82,7 +81,6 @@ async function fetchTrainData(emp_id, gsd_code) {
         }
 
         const data = await response.json();
-        console.log('data', data);
         return data;
     } catch (error) {
         console.error('Error fetching Train data:', error);
@@ -133,5 +131,111 @@ async function fetchEmployeePositions() {
     } catch (error) {
         console.error('Error fetching employee positions:', error);
         return [];
+    }
+}
+
+async function fetchTrainingDetails(training_id) {
+    try {
+        const jwt = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
+
+        const response = await fetch(`${STRAPI_URL}/api/training-dtls?filters[Thead_id][$eq]=${training_id}&populate=*`, {
+            headers: {
+                Authorization: `Bearer ${jwt}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch training details');
+        }
+
+        const data = await response.json();
+        return data.data || [];
+    } catch (error) {
+        console.error('Error fetching training details:', error);
+        return [];
+    }
+}
+
+async function fetchTrainingDetailsByDate(training_id, date) {
+    try {
+        const jwt = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
+
+        const searchResponse = await fetch(`${STRAPI_URL}/api/training-dtls?filters[Thead_id][$eq]=${training_id}&filters[Tdtl_date][$eq]=${date}`, {
+            headers: {
+                Authorization: `Bearer ${jwt}`
+            }
+        });
+
+        if (!searchResponse.ok) {
+            throw new Error('Failed to search training details');
+        }
+
+        const searchData = await searchResponse.json();
+        console.log('Training details by date data:', searchData);
+        return searchData;
+                
+    } catch (error) {
+        console.error('Error fetching training details by date:', error);
+        throw error;
+    }
+}
+
+async function createTrainingDetail(training_id, date, cycle_time) {
+    try {
+        const jwt = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
+
+        const response = await fetch(`${STRAPI_URL}/api/training-dtls`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${jwt}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                data: {
+                    Thead_id: training_id,
+                    Tdtl_date: date,
+                    Tdtl_amv: cycle_time
+                }
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to create training detail');
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error creating training detail:', error);
+        throw error;
+    }
+}
+
+async function updateTrainingDetail(record_id, cycle_time) {
+    try {
+        const jwt = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
+        
+        const response = await fetch(`${STRAPI_URL}/api/training-dtls/${record_id}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${jwt}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                data: {
+                    Tdtl_amv: cycle_time
+                }
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to update training detail');
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error updating training detail:', error);
+        throw error;
     }
 }

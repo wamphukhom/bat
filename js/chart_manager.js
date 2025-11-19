@@ -20,8 +20,10 @@ class ChartManager {
       return null;
     }
 
-    const smvData = Array(11).fill(smvValue);
-    const cycleTimeData = this.generateRandomCycleTimeData(smvData);
+    // เริ่มต้นด้วยกราฟว่าง ไม่แสดงแท่งกราฟ
+    const emptyLabels = [];
+    const emptyCycleTimeData = [];
+    const emptySmvData = [];
     
     // ทำลายกราฟเก่าถ้ามี
     if (this.chart) {
@@ -31,11 +33,11 @@ class ChartManager {
     this.chart = new Chart(ctx.getContext('2d'), {
       type: 'bar',
       data: {
-        labels: ['10/11/68', '11/11/68', '12/11/68', '13/11/68', '14/11/68', '15/11/68', '16/11/68', '17/11/68', '18/11/68', '19/11/68', '20/11/68'],
+        labels: emptyLabels,
         datasets: [
           {
             label: 'Avg Cycle Time (sec)',
-            data: cycleTimeData,
+            data: emptyCycleTimeData,
             backgroundColor: '#007bff',
             borderColor: '#007bff',
             borderWidth: 1,
@@ -44,7 +46,7 @@ class ChartManager {
           },
           {
             label: `Avg SMV (${smvValue} sec)`,
-            data: smvData,
+            data: emptySmvData,
             type: 'line',
             borderColor: '#ff0000',
             backgroundColor: 'transparent',
@@ -67,7 +69,7 @@ class ChartManager {
             display: true,
             position: 'left',
             beginAtZero: true,
-            max: Math.max(...cycleTimeData) + 10,
+            max: 100, // ค่าเริ่มต้นสำหรับกราฟว่าง
             title: {
               display: true,
               text: 'Avg Cycle Time (sec)'
@@ -78,7 +80,7 @@ class ChartManager {
             display: true,
             position: 'right',
             beginAtZero: true,
-            max: Math.max(...smvData) + 10,
+            max: 100, // ค่าเริ่มต้นสำหรับกราฟว่าง
             title: {
               display: true,
               text: 'Avg SMV (sec)'
@@ -95,15 +97,28 @@ class ChartManager {
   }
 
   // อัพเดทข้อมูลกราฟ
-  updateChart(newSmvValue) {
+  updateChart(newSmvValue, realCycleTimeData = null, realDateLabels = null) {
     if (!this.chart) {
       console.error('Chart not initialized');
       return;
     }
 
-    const smvData = Array(11).fill(newSmvValue);
-    const cycleTimeData = this.generateRandomCycleTimeData(smvData);
+    let cycleTimeData, dateLabels, smvData;
+    
+    if (realCycleTimeData && realDateLabels) {
+      // ใช้ข้อมูลจริงจาก database
+      cycleTimeData = realCycleTimeData;
+      dateLabels = realDateLabels;
+      smvData = Array(cycleTimeData.length).fill(newSmvValue);
+    } else {
+      // ใช้ข้อมูล default
+      smvData = Array(11).fill(newSmvValue);
+      cycleTimeData = this.generateRandomCycleTimeData(smvData);
+      dateLabels = ['10/11/68', '11/11/68', '12/11/68', '13/11/68', '14/11/68', '15/11/68', '16/11/68', '17/11/68', '18/11/68', '19/11/68', '20/11/68'];
+    }
 
+    // อัพเดทข้อมูลในกราฟ
+    this.chart.data.labels = dateLabels;
     this.chart.data.datasets[0].data = cycleTimeData;
     this.chart.data.datasets[1].data = smvData;
     this.chart.data.datasets[1].label = `Avg SMV (${newSmvValue} sec)`;
@@ -140,8 +155,8 @@ function initializeChart(canvasId = 'cycleTimeChart', smvValue = 34.8) {
   return chartManager.createCycleTimeChart(canvasId, smvValue);
 }
 
-function updateChartData(smvValue) {
-  chartManager.updateChart(smvValue);
+function updateChartData(smvValue, cycleTimeData = null, dateLabels = null) {
+  chartManager.updateChart(smvValue, cycleTimeData, dateLabels);
 }
 
 function toggleChartVisibility(show) {

@@ -1,3 +1,5 @@
+let theadId = 0;
+
 document.getElementById('emp_name').addEventListener('input', async function () {
   const input = this.value.toLowerCase();
   const employees_data = await fetchEmployeeData();
@@ -78,12 +80,10 @@ document.getElementById('gsd_name').addEventListener('input', async function () 
                 document.getElementById('style').value = latestTrain.Tstyle || '';
                 document.getElementById('customer').value = latestTrain.Tcustomer.Cus_name || '';
                 document.getElementById('quality').value = latestTrain.Tquality || '';
-                document.getElementById('cycleTimeMin').value = latestTrain.Tcycle_time || '';
+                // document.getElementById('cycleTimeMin').value = latestTrain.Tcycle_time || '';
                 document.getElementById('performance').value = latestTrain.Tperformance || '';
 
-                console.log('Training data loaded:', latestTrain);
-            } else {
-                console.log('No training data found for this employee and GSD combination');
+                theadId = latestTrain.documentId;
             }
         }
     });
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // เรียกใช้งานกราฟจาก chart_manager.js
-  initializeChart('cycleTimeChart', 34.8);
+  initializeChart('cycleTimeChart', parseFloat(document.getElementById('gsd_smv').textContent)*60 || 0);
 });
 
 document.getElementById('add-employee-button').addEventListener('click', () => {
@@ -160,4 +160,78 @@ document.getElementById('add-employee-button').addEventListener('click', () => {
   document.getElementById('emp_name_datalist').innerHTML = '';
   document.getElementById('gsd_name_datalist').innerHTML = '';
   document.getElementById('gsd_smv').textContent = '';
+});
+
+document.getElementById('show-chart-button').addEventListener('click', async () => {
+  if (theadId === 0) {
+    alert('กรุณาเลือกพนักงานและ GSD ก่อน');
+    return;
+  }
+
+  try {
+    const trainingDetails = await fetchTrainingDetails(theadId);
+    
+    if (trainingDetails && trainingDetails.length > 0) {
+      // เรียงลำดับข้อมูลตามวันที่ (เก่าสุดไปใหม่สุด)
+      const sortedDetails = trainingDetails.sort((a, b) => new Date(a.Tdtl_date) - new Date(b.Tdtl_date));
+      
+      // ดึงข้อมูลจาก training details ที่เรียงแล้ว
+      const cycleTimeData = sortedDetails.map(detail => detail.Tdtl_amv || 0);
+      const dateLabels = sortedDetails.map(detail => {
+        // แปลงวันที่เป็นรูปแบบที่อ่านง่าย
+        const date = new Date(detail.Tdtl_date);
+        return `${date.getDate()}/${date.getMonth() + 1}/${(date.getFullYear() + 543).toString().slice(-2)}`;
+      });
+      const smvValue = parseFloat(document.getElementById('gsd_smv').textContent)*60 || 0;
+      
+      if (cycleTimeData.length > 0) {
+        updateChartData(smvValue, cycleTimeData, dateLabels);
+      }
+    } else {
+      alert('ไม่พบข้อมูลรายละเอียดการฝึกอบรม');
+    }
+  } catch (error) {
+    console.error('Error loading training details:', error);
+    alert('เกิดข้อผิดพลาดในการโหลดข้อมูล');
+  }
+});
+
+document.getElementById('save-cycle-time-button').addEventListener('click', async () => {
+  if (theadId === 0) {
+    alert('กรุณาเลือกพนักงานและ GSD ก่อน');
+    return;
+  }
+
+  const cycleTimeValue = document.getElementById('cycleTimeMin').value;
+  if (!cycleTimeValue || cycleTimeValue <= 0) {
+    alert('กรุณาใส่ค่า Cycle Time ที่ถูกต้อง');
+    return;
+  }
+
+  const currentDate = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+
+  try {
+    showLoading();
+    
+    const existingData = await fetchTrainingDetailsByDate(theadId, currentDate);
+    const todayRecord = existingData.data?.find(record => {
+      const recordDate = record.attributes?.Tdtl_date || record.Tdtl_date;
+      return recordDate === currentDate;
+    });
+    
+    if (todayRecord) {
+      await updateTrainingDetail(todayRecord.documentId, parseFloat(cycleTimeValue));
+    } else {
+      await createTrainingDetail(theadId, currentDate, parseFloat(cycleTimeValue));
+    }
+    
+    alert('บันทึก Cycle Time เรียบร้อยแล้ว');
+    document.getElementById('cycleTimeMin').value = '';
+    
+  } catch (error) {
+    console.error('Error saving cycle time:', error);
+    alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล: ' + error.message);
+  } finally {
+    hideLoading();
+  }
 });
