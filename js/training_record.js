@@ -58,14 +58,33 @@ document.getElementById('gsd_name').addEventListener('input', async function () 
         datalist.appendChild(option);
     });
 
-    document.getElementById('gsd_name').addEventListener('change', function () {
+    document.getElementById('gsd_name').addEventListener('change', async function () {
         const selectedName = this.value;
         const selectedGsd = gsds.find(gsd => gsd.gsd_name === selectedName);
         if (selectedGsd) {
             document.getElementById('gsd_id').value = selectedGsd.gsd_code;
             document.getElementById('gsd_smv').textContent = parseFloat(selectedGsd.smv).toFixed(2);
             
-            fetchTrainData(document.getElementById('emp_id').value, selectedGsd.gsd_code);
+            // เติมข้อมูล Product Type, Style, Customer จาก GSD
+            document.getElementById('productType').value = selectedGsd.gsd_protype || '';
+            document.getElementById('style').value = selectedGsd.gsd_style || '';
+            document.getElementById('customer').value = selectedGsd.gsd_customer || '';
+            
+            // ดึงข้อมูล Training และแสดงผล
+            const trainData = await fetchTrainData(document.getElementById('emp_id').value, selectedGsd.gsd_code);
+            if (trainData && trainData.data && trainData.data.length > 0) {
+                const latestTrain = trainData.data[0];
+                document.getElementById('productType').value = latestTrain.Ttype.Ptype_name || '';
+                document.getElementById('style').value = latestTrain.Tstyle || '';
+                document.getElementById('customer').value = latestTrain.Tcustomer.Cus_name || '';
+                document.getElementById('quality').value = latestTrain.Tquality || '';
+                document.getElementById('cycleTimeMin').value = latestTrain.Tcycle_time || '';
+                document.getElementById('performance').value = latestTrain.Tperformance || '';
+
+                console.log('Training data loaded:', latestTrain);
+            } else {
+                console.log('No training data found for this employee and GSD combination');
+            }
         }
     });
 });
@@ -97,32 +116,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.getElementById('employee-table-body');
 
     try {
-      const STRAPI_URL = 'https://meaningful-cow-f24113ac1c.strapiapp.com';
-      const SINGLE_TYPE_ENDPOINT = 'employees';
-      const url = `${STRAPI_URL}/api/${SINGLE_TYPE_ENDPOINT}?populate=*`;
-
-      const jwt = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${jwt}`
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const data = await response.json();
+      const employees = await fetchEmployeeData();
       tableBody.innerHTML = '';
 
-      if (data && data.data) {
-        data.data.forEach((employee, index) => {
+      if (employees && employees.length > 0) {
+        employees.forEach((employee, index) => {
           const row = document.createElement('tr');
           row.innerHTML = `
             <td>${index + 1}</td>
             <td>${employee.Emp_name}</td>
-            <td><img src="${employee.Emp_img?.formats?.thumbnail?.url || employee.Emp_img?.url || ''}" alt="Avatar" style="max-height: 50px;"></td>
+            <td><img src="${employee.Emp_img?.formats?.thumbnail?.url || employee.Emp_img?.url || 'img/avatar.jpg'}" alt="Avatar" style="max-height: 50px;"></td>
           `;
           row.style.cursor = 'pointer';
 
@@ -146,90 +149,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Generate random data for Avg Cycle Time based on SMV
-  function generateRandomCycleTimeData(smvData) {
-    return smvData.map(smv => {
-      const variation = Math.random() * 20 - 10; // Random variation between -10 and +10
-      return smv + variation;
-    });
-  }
-
-  // Adjust SMV line to appear in front of the bars
-  const smvData = [34.8, 34.8, 34.8, 34.8, 34.8, 34.8, 34.8, 34.8, 34.8, 34.8, 34.8];
-  const cycleTimeData = generateRandomCycleTimeData(smvData);
-
-  // Cycle Time VS SMV by Operation Chart
-  const cycleTimeCtx = document.getElementById('cycleTimeChart').getContext('2d');
-  new Chart(cycleTimeCtx, {
-    type: 'bar',
-    data: {
-      labels: ['10/11/68', '11/11/68', '12/11/68', '13/11/68', '14/11/68', '15/11/68', '16/11/68', '17/11/68', '18/11/68', '19/11/68', '20/11/68'],
-      datasets: [
-        {
-          label: 'Avg Cycle Time (sec)',
-          data: cycleTimeData,
-          backgroundColor: '#007bff',
-          borderColor: '#007bff',
-          borderWidth: 1,
-          yAxisID: 'y',
-          order: 2 // Ensure bars are drawn behind the SMV line
-        },
-        {
-          label: 'Avg SMV (34.8 sec)',
-          data: smvData,
-          type: 'line',
-          borderColor: '#ff0000', // Change SMV line color to red
-          backgroundColor: 'transparent',
-          borderWidth: 2,
-          yAxisID: 'y1',
-          order: 1 // Ensure SMV line is drawn in front of the bars
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: {
-        mode: 'index',
-        intersect: false,
-      },
-      scales: {
-        y: {
-          type: 'linear',
-          display: true,
-          position: 'left',
-          beginAtZero: true,
-          max: Math.max(...cycleTimeData) + 10, // Add space above the highest value
-          title: {
-            display: true,
-            text: 'Avg Cycle Time (sec)'
-          }
-        },
-        y1: {
-          type: 'linear',
-          display: true,
-          position: 'right',
-          beginAtZero: true,
-          max: Math.max(...smvData) + 10, // Add space above the SMV line
-          title: {
-            display: true,
-            text: 'Avg SMV (sec)'
-          },
-          grid: {
-            drawOnChartArea: false,
-          }
-        }
-      }
-    }
-  });
+  // เรียกใช้งานกราฟจาก chart_manager.js
+  initializeChart('cycleTimeChart', 34.8);
 });
 
-// Add event listener to clear all input fields when the add-employee-button is clicked
 document.getElementById('add-employee-button').addEventListener('click', () => {
   const inputFields = document.querySelectorAll('input');
   inputFields.forEach(input => input.value = '');
 
-  // Clear additional fields like datalist and text content if necessary
   document.getElementById('emp_name_datalist').innerHTML = '';
   document.getElementById('gsd_name_datalist').innerHTML = '';
   document.getElementById('gsd_smv').textContent = '';

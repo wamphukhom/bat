@@ -58,9 +58,12 @@
           <div class="col-sm-2">
             <input type="text" class="form-control" id="gsd_id" placeholder="รหัส GSD">
           </div>
-          <div class="col-sm-8">
+          <div class="col-sm-5">
             <input type="text" class="form-control" id="gsd_name" placeholder="ชื่อ GSD" list="gsd_name_datalist" autocomplete="off">
             <datalist id="gsd_name_datalist"></datalist>
+          </div>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" id="style" placeholder="สไตล์" readonly>
           </div>
         </div>
 
@@ -70,12 +73,12 @@
             <input type="text" class="form-control" id="productType" placeholder="ประเภทสินค้า" readonly>
           </div>
           <div class="col-md-4">
-            <label for="style" class="col-form-label text-white">Style</label>
-            <input type="text" class="form-control" id="style" placeholder="สไตล์" readonly>
-          </div>
-          <div class="col-md-4">
             <label for="customer" class="col-form-label text-white">Customer</label>
             <input type="text" class="form-control" id="customer" placeholder="ลูกค้า" readonly>
+          </div>
+          <div class="col-md-4">
+            <label for="cycleTimeMin" class="col-form-label text-white">Cycle Time</label>
+            <input type="number" class="form-control" id="cycleTimeMin" placeholder="Cycle Time (นาที)">
           </div>
         </div>
 
@@ -85,12 +88,18 @@
             <input type="text" class="form-control" id="quality" placeholder="คุณภาพ">
           </div>
           <div class="col-md-4">
-            <label for="cycleTimeMin" class="col-form-label text-white">Cycle Time</label>
-            <input type="number" class="form-control" id="cycleTimeMin" placeholder="Cycle Time (นาที)">
-          </div>
-          <div class="col-md-4">
             <label for="performance" class="col-form-label text-white">Performance</label>
             <input type="text" class="form-control" id="performance" placeholder="ประสิทธิภาพ">
+          </div>
+          <div class="col-md-4">
+            <div class="row h-100">
+              <div class="col-md-6">
+                <button type="button" class="btn btn-primary w-100 h-100 border-radius">แสดงกราฟ</button>
+                </div>
+              <div class="col-md-6">
+                <button type="button" class="btn btn-success w-100 h-100 border-radius">บันทึก Cycle Time</button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -134,8 +143,9 @@
 
   <!-- Bootstrap JS bundle -->
   <script src="js/bootstrap.bundle.min.js"></script>
-  <script src="js/training_record.js"></script>
   <script src="js/data_fetchers.js"></script>
+  <script src="js/chart_manager.js"></script>
+  <script src="js/training_record.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </body>
