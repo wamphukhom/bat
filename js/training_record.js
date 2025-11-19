@@ -1,71 +1,13 @@
-const STRAPI_URL = 'https://meaningful-cow-f24113ac1c.strapiapp.com';
+document.getElementById('emp_name').addEventListener('input', async function () {
+  const input = this.value.toLowerCase();
+  const employees_data = await fetchEmployeeData();
 
-async function fetchEmployeeData() {
-  try {
-    const jwt = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
-
-    const response = await fetch(`${STRAPI_URL}/api/employees?populate=*`, {
-      headers: {
-        Authorization: `Bearer ${jwt}`
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch customer data');
-    }
-
-    const data = await response.json();
-    const employees = data.data.map(employee => ({
+  const employees = employees_data.map(employee => ({
         id: employee.id,
         emp_id: employee.Emp_id,
         emp_name: employee.Emp_name,
         emp_position: employee.Emp_position?.Epo_name
     }));
-
-    return employees;
-  } catch (error) {
-    console.error('Error fetching employee data:', error);
-    return [];
-  }
-}
-
-async function fetchGSDData() {
-  try {
-    const jwt = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
-
-    const response = await fetch(`${STRAPI_URL}/api/gsds?populate=*`, {
-      headers: {
-        Authorization: `Bearer ${jwt}`
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch GSD data');
-    }
-
-    const data = await response.json();
-    const gsds = data.data.map(gsd => ({
-        id: gsd.id,
-        gsd_code: gsd.GSD_code,
-        gsd_name: gsd.GSD_name,
-        smv: gsd.GSD_SMV
-    }));
-
-    return gsds;
-  } catch (error) {
-    console.error('Error fetching GSD data:', error);
-    return [];
-  }
-}
-
-document.addEventListener('DOMContentLoaded', async () => {
-  const eemployees = await fetchEmployeeData();
-  const ggsd = await fetchGSDData();
-});
-
-document.getElementById('emp_name').addEventListener('input', async function () {
-  const input = this.value.toLowerCase();
-  const employees = await fetchEmployeeData();
 
   const filteredEmployees = employees.filter(employee =>
     employee.emp_name.toLowerCase().includes(input)
@@ -93,7 +35,14 @@ document.getElementById('emp_name').addEventListener('input', async function () 
 
 document.getElementById('gsd_name').addEventListener('input', async function () {
     const input = this.value.toLowerCase();
-    const gsds = await fetchGSDData();
+    const gsds_data = await fetchGSDData();
+
+    const gsds = gsds_data.map(gsd => ({
+        id: gsd.id,
+        gsd_code: gsd.GSD_code,
+        gsd_name: gsd.GSD_name,
+        smv: gsd.GSD_SMV
+    }));
 
     const filteredGsds = gsds.filter(gsd =>
         gsd.gsd_name.toLowerCase().includes(input)
@@ -115,6 +64,8 @@ document.getElementById('gsd_name').addEventListener('input', async function () 
         if (selectedGsd) {
             document.getElementById('gsd_id').value = selectedGsd.gsd_code;
             document.getElementById('gsd_smv').textContent = parseFloat(selectedGsd.smv).toFixed(2);
+            
+            fetchTrainData(document.getElementById('emp_id').value, selectedGsd.gsd_code);
         }
     });
 });
@@ -271,4 +222,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
+});
+
+// Add event listener to clear all input fields when the add-employee-button is clicked
+document.getElementById('add-employee-button').addEventListener('click', () => {
+  const inputFields = document.querySelectorAll('input');
+  inputFields.forEach(input => input.value = '');
+
+  // Clear additional fields like datalist and text content if necessary
+  document.getElementById('emp_name_datalist').innerHTML = '';
+  document.getElementById('gsd_name_datalist').innerHTML = '';
+  document.getElementById('gsd_smv').textContent = '';
 });

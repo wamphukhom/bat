@@ -13,13 +13,6 @@ function handleEmployeeForm(event) {
     email: formData.get('empEmail'),
     type: formData.get('empType')
   };
-
-  console.log('handleEmployeeForm',employee)
-  // eemployee.push(employee);
-  // localStorage.setItem('employees', JSON.stringify(eemployee));
-  // showSuccessMessage(`บันทึกข้อมูลพนักงาน ${employee.name} เรียบร้อยแล้ว`);
-  // event.target.reset();
-  // displayEmployeeList();
 }
 
 document.getElementById('employee-form').addEventListener('reset', () => {
@@ -28,14 +21,15 @@ document.getElementById('employee-form').addEventListener('reset', () => {
   photoPreview.style.display = 'block';
 });
 
-// Show success modal
-function showSuccessMessage(message) {
-  document.getElementById('success-message').textContent = message;
-  const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-  successModal.show();
+function showAllEmployees() {
+  if (eemployee.length === 0) {
+    alert('ยังไม่มีข้อมูลพนักงาน');
+    return;
+  }
+
+  populateEmployeeTable();
 }
 
-// Display employee list
 function displayEmployeeList() {
   const employeeListElement = document.getElementById('employee-list');
   
@@ -43,8 +37,7 @@ function displayEmployeeList() {
     employeeListElement.innerHTML = '<p class="text-white-50 text-center">ยังไม่มีข้อมูลพนักงาน</p>';
     return;
   }
-  
-  // Show latest 5 employees
+
   const latestEmployees = eemployee.slice(-1).reverse();
   let html = '';
   
@@ -59,18 +52,6 @@ function displayEmployeeList() {
   employeeListElement.innerHTML = html;
 }
 
-// Show all employees (placeholder function)
-function showAllEmployees() {
-  const tableBody = document.getElementById('employee-table-body');
-  if (eemployee.length === 0) {
-    alert('ยังไม่มีข้อมูลพนักงาน');
-    return;
-  }
-
-  populateEmployeeTable();
-}
-
-// Phone number formatting
 function formatPhoneNumber(input) {
   let value = input.value.replace(/\D/g, '');
   
@@ -80,34 +61,6 @@ function formatPhoneNumber(input) {
   }
   
   input.value = value;
-}
-
-// -- api --
-const STRAPI_URL = 'https://meaningful-cow-f24113ac1c.strapiapp.com'; 
-const SINGLE_TYPE_ENDPOINT = 'employees';
-
-const url = `${STRAPI_URL}/api/${SINGLE_TYPE_ENDPOINT}?populate=*`;
-
-async function fetchEmployeeData() {
-    try {
-        // Retrieve JWT from cookies
-        const jwt = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
-
-        const response = await fetch(url, {
-            method: 'GET', // Specify GET method explicitly
-            headers: {
-                'Authorization': `Bearer ${jwt}` // Add Bearer token from cookie
-            }
-        });
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error fetching employee data:', error);
-        throw error;
-    }
 }
 
 function populateEmployeeTable() {
@@ -149,7 +102,6 @@ function populateEmployeeTable() {
       photoPreview.src = employee.avatar;
       photoPreview.style.display = 'block';
 
-      // Close the modal popup
       const employeeModal = bootstrap.Modal.getInstance(document.getElementById('employeeModal'));
       employeeModal.hide();
     });
@@ -164,24 +116,10 @@ function populateEmployeeTable() {
 async function populateMemberTypes() {
   const empTypeSelect = document.getElementById('empType-select');
   try {
-    // Retrieve JWT from cookies
-    const jwt = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
-
-    const response = await fetch('https://meaningful-cow-f24113ac1c.strapiapp.com/api/emp-types', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${jwt}` // Add Bearer token from cookie
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch member types');
-    }
-
-    const data = await response.json();
-
+    const data = await fetchEmployeeTypes();
+    
     empTypeSelect.innerHTML = '<option value="">เลือกประเภทพนักงาน</option>';
-    data.data.forEach(type => {
+    data.forEach(type => {
       const option = document.createElement('option');
       option.value = type.id;
       option.textContent = type.Etype_name;
@@ -196,23 +134,10 @@ async function populateMemberTypes() {
 async function populatePositions() {
   const empPositionSelect = document.querySelector('select[name="empPosition"]');
   try {
-    // Retrieve JWT from cookies
-    const jwt = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
-
-    const response = await fetch('https://meaningful-cow-f24113ac1c.strapiapp.com/api/emp-positions', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${jwt}` // Add Bearer token from cookie
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch positions');
-    }
-
-    const data = await response.json();
+    const data = await fetchEmployeePositions();
+    
     empPositionSelect.innerHTML = '<option value="">เลือกตำแหน่งงาน</option>';
-    data.data.forEach(position => {
+    data.forEach(position => {
       const option = document.createElement('option');
       option.value = position.id;
       option.textContent = position.Epo_name;
@@ -224,15 +149,12 @@ async function populatePositions() {
   }
 }
 
-// Define an initialization function
-function initializeApp() {
-  // Add form event listener
+async function initializeApp() {
   const employeeForm = document.getElementById('employee-form');
   if (employeeForm) {
     employeeForm.addEventListener('submit', handleEmployeeForm);
   }
 
-  // Add phone number formatting
   const phoneInput = document.querySelector('input[name="phone"]');
   if (phoneInput) {
     phoneInput.addEventListener('input', function() {
@@ -240,10 +162,8 @@ function initializeApp() {
     });
   }
 
-  // Display existing employees
   displayEmployeeList();
 
-  // Set default date for better UX
   const today = new Date().toISOString().split('T')[0];
   const dateInputs = document.querySelectorAll('input[type="date"]');
   dateInputs.forEach(input => {
@@ -252,39 +172,35 @@ function initializeApp() {
     }
   });
 
-  // Fetch and populate data
-  fetchEmployeeData().then(data => {
-    if (data && data.data) {
-      // Map fetched data to eemployee array
-      eemployee = data.data.map(employee => ({
+  try {
+    const data = await fetchEmployeeData();
+    if (data && data.length > 0) {
+      eemployee = data.map(employee => ({
         id: employee.id,
         emp_id: employee.Emp_id,
         name: employee.Emp_name,
         email: employee.Emp_mail,
         phone: employee.Emp_tel,
-        avatar: employee.Emp_img?.formats?.thumbnail?.url || employee.Emp_img?.url || '',
+        avatar: employee.Emp_img?.formats?.thumbnail?.url || employee.Emp_img?.url || 'img/avatar.jpg',
         createdAt: employee.createdAt,
-        emp_position_id: employee.Emp_position.id,
-        emp_position_name: employee.Emp_position.Epo_name,
-        emp_type_id: employee.Emp_type.id
+        emp_position_id: employee.Emp_position?.id,
+        emp_position_name: employee.Emp_position?.Epo_name,
+        emp_type_id: employee.Emp_type?.id
       }));
 
-      // Display all employees
       displayEmployeeList();
-
-      // Populate the table
-      populateEmployeeTable();
     } else {
       console.error('No employee data found');
     }
-  });
+  } catch (error) {
+    console.error('Error loading employee data:', error);
+  }
 
-  populateMemberTypes();
-  populatePositions();
+  await populateMemberTypes();
+  await populatePositions();
 }
 
-// Call the initialization function
-initializeApp();
+document.addEventListener('DOMContentLoaded', initializeApp);
 
 function previewPhoto(event) {
   const input = event.target;

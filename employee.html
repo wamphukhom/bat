@@ -4,8 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ศูนย์ฝึกอบรมบุคลากร - ข้อมูลพนักงาน</title>
+    <link rel="icon" type="image/png" href="img/logo.png">
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/loading.css">
 </head>
 <body>
   <div class="bg-overlay" aria-hidden="true"></div>
@@ -108,24 +110,6 @@
     </div>
   </div>
 
-  <!-- Success Modal -->
-  <div class="modal fade" id="successModal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content bg-dark text-white border-success">
-        <div class="modal-header border-success">
-          <h5 class="modal-title">✅ สำเร็จ</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <p id="success-message">บันทึกข้อมูลพนักงานเรียบร้อยแล้ว</p>
-        </div>
-        <div class="modal-footer border-success">
-          <button type="button" class="btn btn-success" data-bs-dismiss="modal">ตกลง</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Modal for displaying employee data -->
   <div class="modal fade" id="employeeModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -143,7 +127,12 @@
     </div>
   </div>
 
+  <div id="loadingOverlay" class="loading-overlay hidden">
+    <div class="loading-spinner"></div>
+  </div>
+
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/employee.js"></script>
+  <script src="js/data_fetchers.js"></script>
 </body>
 </html>

@@ -1,33 +1,4 @@
-const STRAPI_URL = 'https://meaningful-cow-f24113ac1c.strapiapp.com';
-const GSD_ENDPOINT = 'gsds';
-
 let gsdTable;
-
-async function fetchGSDData() {
-  try {
-    showLoading();
-    const jwt = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
-
-    const response = await fetch(`${STRAPI_URL}/api/${GSD_ENDPOINT}?populate=*`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${jwt}`
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-
-    const data = await response.json();
-    return data.data || [];
-  } catch (error) {
-    console.error('Error fetching GSD data:', error);
-    return [];
-  } finally {
-    hideLoading();
-  }
-}
 
 async function initializeDataTable() {
   const gsdData = await fetchGSDData();
@@ -96,15 +67,3 @@ function initializeApp() {
 }
 
 document.addEventListener('DOMContentLoaded', initializeApp);
-
-function showLoading() {
-  const loadingElement = document.getElementById('loadingOverlay');
-  loadingElement.classList.remove('hidden');
-}
-
-function hideLoading() {
-  const loadingElement = document.getElementById('loadingOverlay');
-  setTimeout(() => {
-      loadingElement.classList.add('hidden');
-  }, 100); // ระยะเวลา transition ใน CSS
-}

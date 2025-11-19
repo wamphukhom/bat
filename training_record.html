@@ -4,8 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>บันทึกการฝึกอบรม</title>
+    <link rel="icon" type="image/png" href="img/logo.png">
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/loading.css">
   <style>
     #cycleTimeChart {
       height: 400px; /* Fixed height */
@@ -64,6 +66,21 @@
 
         <div class="row mb-3">
           <div class="col-md-4">
+            <label for="productType" class="col-form-label text-white">Product Type</label>
+            <input type="text" class="form-control" id="productType" placeholder="ประเภทสินค้า" readonly>
+          </div>
+          <div class="col-md-4">
+            <label for="style" class="col-form-label text-white">Style</label>
+            <input type="text" class="form-control" id="style" placeholder="สไตล์" readonly>
+          </div>
+          <div class="col-md-4">
+            <label for="customer" class="col-form-label text-white">Customer</label>
+            <input type="text" class="form-control" id="customer" placeholder="ลูกค้า" readonly>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-4">
             <label for="quality" class="col-form-label text-white">Quality</label>
             <input type="text" class="form-control" id="quality" placeholder="คุณภาพ">
           </div>
@@ -77,23 +94,9 @@
           </div>
         </div>
 
-        <div class="row mb-3">
-          <div class="col-md-4">
-            <label for="productType" class="col-form-label text-white">Product Type</label>
-            <input type="text" class="form-control" id="productType" placeholder="ประเภทสินค้า">
-          </div>
-          <div class="col-md-4">
-            <label for="style" class="col-form-label text-white">Style</label>
-            <input type="text" class="form-control" id="style" placeholder="สไตล์">
-          </div>
-          <div class="col-md-4">
-            <label for="customer" class="col-form-label text-white">Customer</label>
-            <input type="text" class="form-control" id="customer" placeholder="ลูกค้า">
-          </div>
-        </div>
-
         <div class="text-center">
           <button type="button" class="btn btn-primary" id="search-employee-button">ค้นหาพนักงาน</button>
+          <button type="button" class="btn btn-warning" id="add-employee-button">เพิ่ม</button>
           <button type="submit" class="btn btn-success">บันทึก</button>
         </div>
       </form>
@@ -125,9 +128,15 @@
     </div>
   </div>
 
+  <div id="loadingOverlay" class="loading-overlay hidden">
+    <div class="loading-spinner"></div>
+  </div>
+
   <!-- Bootstrap JS bundle -->
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/training_record.js"></script>
+  <script src="js/data_fetchers.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </body>
 </html>

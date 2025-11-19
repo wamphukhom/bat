@@ -4,11 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ศูนย์ฝึกอบรมบุคลากร - ข้อมูลหลักสูตร</title>
+  <link rel="icon" type="image/png" href="img/logo.png">
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/loading.css">
   <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
-  <link rel="stylesheet" href="css/loading.css">
   <style>
     table {
       width: 100%; /* Expand table width to full container */
@@ -64,7 +65,7 @@
     </div>
   </div>
 
-  <div id="loadingOverlay" class="loading-overlay">
+  <div id="loadingOverlay" class="loading-overlay hidden">
     <div class="loading-spinner"></div>
   </div>
 
@@ -73,6 +74,7 @@
   <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
   <script src="js/gsd.js"></script>
+  <script src="js/data_fetchers.js"></script>
 
 </body>
 </html>

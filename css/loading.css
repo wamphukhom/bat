@@ -6,7 +6,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.8); /* พื้นหลังโปร่งแสงสีขาว */
+    background-color: rgba(0, 0, 0, 0.8); /* พื้นหลังโปร่งแสงสีขาว */
     display: flex; /* จัดให้อยู่ตรงกลาง */
     justify-content: center;
     align-items: center;
