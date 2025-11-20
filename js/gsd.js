@@ -1,9 +1,54 @@
 let gsdTable;
 
+async function fetchTrainingData() {
+  try {
+    const jwt = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
+    const response = await fetch(`${STRAPI_URL}/api/trainings?populate=*`, {
+      headers: {
+        Authorization: `Bearer ${jwt}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch training data');
+    }
+
+    const data = await response.json();
+    return data.data || [];
+  } catch (error) {
+    console.error('Error fetching training data:', error);
+    return [];
+  }
+}
+
 async function initializeDataTable() {
   const gsdData = await fetchGSDData();
+  const trainingData = await fetchTrainingData();
+
+  // สร้าง map เพื่อหา cycle time ที่ดีที่สุดของแต่ละ GSD
+  const bestCycleTimeMap = new Map();
+  
+  trainingData.forEach(training => {
+    if (training.Tcycle_time && training.Tcycle_time > 0) {
+      const gsdCode = training.Tgsd_id?.GSD_code;
+      const employeeName = training.Temp_id?.Emp_name;
+      const cycleTime = training.Tcycle_time;
+      
+      if (gsdCode) {
+        const existing = bestCycleTimeMap.get(gsdCode);
+        if (!existing || cycleTime < existing.cycleTime) {
+          bestCycleTimeMap.set(gsdCode, {
+            cycleTime: cycleTime,
+            employeeName: employeeName || 'ไม่ระบุ'
+          });
+        }
+      }
+    }
+  });
 
   const tableData = gsdData.map((item, index) => {
+    const bestData = bestCycleTimeMap.get(item.GSD_code);
+    
     return [
       index + 1,
       item.GSD_code || '-',
@@ -13,7 +58,9 @@ async function initializeDataTable() {
       (item.GSD_SMV || 0) * 60,
       item.GSD_protype || '-',
       item.GSD_style || '-',
-      item.GSD_customer || '-'
+      item.GSD_customer || '-',
+      bestData ? bestData.employeeName : '-',
+      bestData ? bestData.cycleTime.toFixed(2) : '-'
     ];
   });
 

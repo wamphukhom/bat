@@ -171,7 +171,8 @@ document.getElementById('show-chart-button').addEventListener('click', async () 
     
     if (trainingDetails && trainingDetails.length > 0) {
       const sortedDetails = trainingDetails.sort((a, b) => new Date(a.Tdtl_date) - new Date(b.Tdtl_date));
-
+      const validCycleTimes = trainingDetails.map(detail => detail.Tdtl_amv || 0).filter(time => time > 0);
+      const minCycleTime = validCycleTimes.length > 0 ? Math.min(...validCycleTimes) : 0;
       const cycleTimeData = sortedDetails.map(detail => detail.Tdtl_amv || 0);
       const dateLabels = sortedDetails.map(detail => {
         const date = new Date(detail.Tdtl_date);
@@ -181,6 +182,15 @@ document.getElementById('show-chart-button').addEventListener('click', async () 
       
       if (cycleTimeData.length > 0) {
         updateChartData(smvValue, cycleTimeData, dateLabels);
+      }
+
+      // อัพเดท Tcycle_time ใน training record ถ้า minCycleTime > 0
+      if (minCycleTime > 0) {
+        try {
+          await updateTrainingCycleTime(theadId, minCycleTime);
+        } catch (error) {
+          console.error('Error updating training cycle time:', error);
+        }
       }
     } else {
       alert('ไม่พบข้อมูลรายละเอียดการฝึกอบรม');

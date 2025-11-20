@@ -158,7 +158,6 @@ async function fetchTrainingDetailsByDate(training_id, date) {
         }
 
         const searchData = await searchResponse.json();
-        console.log('Training details by date data:', searchData);
         return searchData;
                 
     } catch (error) {
@@ -223,8 +222,34 @@ async function updateTrainingDetail(record_id, cycle_time) {
     }
 }
 
+async function updateTrainingCycleTime(training_id, cycle_time) {
+    try {
+        const response = await fetch(`${STRAPI_URL}/api/trainings/${training_id}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${jwt}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                data: {
+                    Tcycle_time: cycle_time
+                }
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to update training cycle time');
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error updating training cycle time:', error);
+        throw error;
+    }
+}
+
 async function saveTrainingData(emp_id, gsd_id, productType, customer, quality, performance, style) {
-    console.log('Saving training data:', { emp_id, gsd_id, productType, customer, quality, performance, style });
     try {
         // ค้นหาข้อมูลที่มีอยู่แล้ว
         const existingResponse = await fetch(`${STRAPI_URL}/api/trainings?filters[Temp_id][Emp_id][$eq]=${emp_id}&filters[Tgsd_id][GSD_code][$eq]=${gsd_id}&populate=*`, {
@@ -238,12 +263,10 @@ async function saveTrainingData(emp_id, gsd_id, productType, customer, quality, 
         }
 
         const existingData = await existingResponse.json();
-        console.log('Existing training data:', existingData);
 
         if (existingData.data && existingData.data.length > 0) {
             // อัพเดทข้อมูลที่มีอยู่แล้ว
             const existingRecord = existingData.data[0];
-            console.log('Updating existing training record ID:', existingRecord.documentId);
             
             const updateResponse = await fetch(`${STRAPI_URL}/api/trainings/${existingRecord.documentId}`, {
                 method: 'PUT',
@@ -265,13 +288,9 @@ async function saveTrainingData(emp_id, gsd_id, productType, customer, quality, 
             }
 
             const updateData = await updateResponse.json();
-            console.log('Updated training data:', updateData);
             return { action: 'updated', data: updateData };
         } else {
             // สร้างข้อมูลใหม่
-            console.log('Creating new training record', emp_id, gsd_id, productType, customer);
-            
-            // ค้นหา employee และ GSD data เพื่อได้ relation IDs
             const [employeeData, gsdData, productTypeData, customerData] = await Promise.all([
                 fetch(`${STRAPI_URL}/api/employees?filters[Emp_id][$eq]=${emp_id}`, {
                     headers: { Authorization: `Bearer ${jwt}` }
@@ -287,9 +306,6 @@ async function saveTrainingData(emp_id, gsd_id, productType, customer, quality, 
                 }).then(res => res.json())
 
             ]);
-
-            console.log('Employee data for relation:', employeeData);
-            console.log('GSD data for relation:', gsdData);
 
             if (!employeeData.data?.length || !gsdData.data?.length) {
                 throw new Error('Employee or GSD not found for creating training record');
@@ -311,8 +327,6 @@ async function saveTrainingData(emp_id, gsd_id, productType, customer, quality, 
                     Tcustomer: customerDocId || ''
                 }
             };
-
-            console.log('Create payload:', JSON.stringify(createPayload, null, 2));
             
             const createResponse = await fetch(`${STRAPI_URL}/api/trainings`, {
                 method: 'POST',
@@ -330,7 +344,6 @@ async function saveTrainingData(emp_id, gsd_id, productType, customer, quality, 
             }
 
             const createData = await createResponse.json();
-            console.log('Created training data:', createData);
             return { action: 'created', data: createData };
         }
     } catch (error) {
