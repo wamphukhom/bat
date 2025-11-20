@@ -34,7 +34,6 @@ async function handleLogin() {
     console.error('Error during login:', error);
     alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
   } finally {
-    // Hide loading icon
     loginButton.innerHTML = 'เข้าสู่ระบบ';
     loginButton.disabled = false;
   }

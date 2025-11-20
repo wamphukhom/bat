@@ -1,12 +1,8 @@
-// Training Dashboard JavaScript
-
-// Initialize charts when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
   initializeCharts();
 });
 
 function initializeCharts() {
-  // Top 5 Trainer by Performance Chart
   const trainerCtx = document.getElementById('trainerPerformanceChart').getContext('2d');
   new Chart(trainerCtx, {
     type: 'bar',

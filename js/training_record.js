@@ -1,5 +1,9 @@
 let theadId = 0;
 
+document.addEventListener('DOMContentLoaded', () => {
+  initializeChart('cycleTimeChart', parseFloat(document.getElementById('gsd_smv').textContent)*60 || 0);
+});
+
 document.getElementById('emp_name').addEventListener('input', async function () {
   const input = this.value.toLowerCase();
   const employees_data = await fetchEmployeeData();
@@ -42,6 +46,9 @@ document.getElementById('gsd_name').addEventListener('input', async function () 
     const gsds = gsds_data.map(gsd => ({
         id: gsd.id,
         gsd_code: gsd.GSD_code,
+        gsd_style: gsd.GSD_style,
+        gsd_protype: gsd.GSD_protype,
+        gsd_customer: gsd.GSD_customer,
         gsd_name: gsd.GSD_name,
         smv: gsd.GSD_SMV
     }));
@@ -66,13 +73,10 @@ document.getElementById('gsd_name').addEventListener('input', async function () 
         if (selectedGsd) {
             document.getElementById('gsd_id').value = selectedGsd.gsd_code;
             document.getElementById('gsd_smv').textContent = parseFloat(selectedGsd.smv).toFixed(2);
-            
-            // เติมข้อมูล Product Type, Style, Customer จาก GSD
             document.getElementById('productType').value = selectedGsd.gsd_protype || '';
             document.getElementById('style').value = selectedGsd.gsd_style || '';
             document.getElementById('customer').value = selectedGsd.gsd_customer || '';
-            
-            // ดึงข้อมูล Training และแสดงผล
+
             const trainData = await fetchTrainData(document.getElementById('emp_id').value, selectedGsd.gsd_code);
             if (trainData && trainData.data && trainData.data.length > 0) {
                 const latestTrain = trainData.data[0];
@@ -89,68 +93,62 @@ document.getElementById('gsd_name').addEventListener('input', async function () 
     });
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('search-employee-button').addEventListener('click', async () => {
-    const employeeModal = new bootstrap.Modal(document.getElementById('employeeModal'));
-    employeeModal.show();
+document.getElementById('search-employee-button').addEventListener('click', async () => {
+  const employeeModal = new bootstrap.Modal(document.getElementById('employeeModal'));
+  employeeModal.show();
 
-    const modalBody = document.getElementById('employee-modal-body');
-    let table = modalBody.querySelector('table');
+  const modalBody = document.getElementById('employee-modal-body');
+  let table = modalBody.querySelector('table');
 
-    // Create table structure if not exists
-    if (!table) {
-      modalBody.innerHTML = `
-        <table class="table table-dark table-striped">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>ชื่อ</th>
-              <th>รูป</th>
-            </tr>
-          </thead>
-          <tbody id="employee-table-body"></tbody>
-        </table>
-      `;
-    }
+  if (!table) {
+    modalBody.innerHTML = `
+      <table class="table table-dark table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>ชื่อ</th>
+            <th>รูป</th>
+          </tr>
+        </thead>
+        <tbody id="employee-table-body"></tbody>
+      </table>
+    `;
+  }
 
-    const tableBody = document.getElementById('employee-table-body');
+  const tableBody = document.getElementById('employee-table-body');
 
-    try {
-      const employees = await fetchEmployeeData();
-      tableBody.innerHTML = '';
+  try {
+    const employees = await fetchEmployeeData();
+    tableBody.innerHTML = '';
 
-      if (employees && employees.length > 0) {
-        employees.forEach((employee, index) => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${employee.Emp_name}</td>
-            <td><img src="${employee.Emp_img?.formats?.thumbnail?.url || employee.Emp_img?.url || 'img/avatar.jpg'}" alt="Avatar" style="max-height: 50px;"></td>
-          `;
-          row.style.cursor = 'pointer';
+    if (employees && employees.length > 0) {
+      employees.forEach((employee, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${employee.Emp_name}</td>
+          <td><img src="${employee.Emp_img?.formats?.thumbnail?.url || employee.Emp_img?.url || 'img/avatar.jpg'}" alt="Avatar" style="max-height: 50px;"></td>
+        `;
+        row.style.cursor = 'pointer';
 
-          row.addEventListener('click', () => {
-            document.getElementById('emp_id').value = employee.Emp_id;
-            document.getElementById('emp_name').value = employee.Emp_name;
-            document.getElementById('emp_position').value = employee.Emp_position?.Epo_name || '';
+        row.addEventListener('click', () => {
+          document.getElementById('emp_id').value = employee.Emp_id;
+          document.getElementById('emp_name').value = employee.Emp_name;
+          document.getElementById('emp_position').value = employee.Emp_position?.Epo_name || '';
 
-            const employeeModalInstance = bootstrap.Modal.getInstance(document.getElementById('employeeModal'));
-            employeeModalInstance.hide();
-          });
-
-          tableBody.appendChild(row);
+          const employeeModalInstance = bootstrap.Modal.getInstance(document.getElementById('employeeModal'));
+          employeeModalInstance.hide();
         });
-      } else {
-        tableBody.innerHTML = '<tr><td colspan="3" class="text-center text-white-50">ยังไม่มีข้อมูลพนักงาน</td></tr>';
-      }
-    } catch (error) {
-      console.error('Error fetching employee data:', error);
-      alert('เกิดข้อผิดพลาดในการดึงข้อมูลพนักงาน');
-    }
-  });
 
-  // เรียกใช้งานกราฟจาก chart_manager.js
-  initializeChart('cycleTimeChart', parseFloat(document.getElementById('gsd_smv').textContent)*60 || 0);
+        tableBody.appendChild(row);
+      });
+    } else {
+      tableBody.innerHTML = '<tr><td colspan="3" class="text-center text-white-50">ยังไม่มีข้อมูลพนักงาน</td></tr>';
+    }
+  } catch (error) {
+    console.error('Error fetching employee data:', error);
+    alert('เกิดข้อผิดพลาดในการดึงข้อมูลพนักงาน');
+  }
 });
 
 document.getElementById('add-employee-button').addEventListener('click', () => {
@@ -172,13 +170,10 @@ document.getElementById('show-chart-button').addEventListener('click', async () 
     const trainingDetails = await fetchTrainingDetails(theadId);
     
     if (trainingDetails && trainingDetails.length > 0) {
-      // เรียงลำดับข้อมูลตามวันที่ (เก่าสุดไปใหม่สุด)
       const sortedDetails = trainingDetails.sort((a, b) => new Date(a.Tdtl_date) - new Date(b.Tdtl_date));
-      
-      // ดึงข้อมูลจาก training details ที่เรียงแล้ว
+
       const cycleTimeData = sortedDetails.map(detail => detail.Tdtl_amv || 0);
       const dateLabels = sortedDetails.map(detail => {
-        // แปลงวันที่เป็นรูปแบบที่อ่านง่าย
         const date = new Date(detail.Tdtl_date);
         return `${date.getDate()}/${date.getMonth() + 1}/${(date.getFullYear() + 543).toString().slice(-2)}`;
       });
@@ -198,7 +193,7 @@ document.getElementById('show-chart-button').addEventListener('click', async () 
 
 document.getElementById('save-cycle-time-button').addEventListener('click', async () => {
   if (theadId === 0) {
-    alert('กรุณาเลือกพนักงานและ GSD ก่อน');
+      alert('กรุณาเลือกพนักงานและ GSD ก่อน');
     return;
   }
 
@@ -230,6 +225,46 @@ document.getElementById('save-cycle-time-button').addEventListener('click', asyn
     
   } catch (error) {
     console.error('Error saving cycle time:', error);
+    alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล: ' + error.message);
+  } finally {
+    hideLoading();
+  }
+});
+
+document.getElementById('save-training-button').addEventListener('click', async () => {
+  // ดึงข้อมูลจากฟอร์ม
+  const emp_id = document.getElementById('emp_id').value;
+  const gsd_id = document.getElementById('gsd_id').value;
+  const productType = document.getElementById('productType').value;
+  const customer = document.getElementById('customer').value;
+  const quality = document.getElementById('quality').value;
+  const performance = document.getElementById('performance').value;
+  const style = document.getElementById('style').value;
+
+  // ตรวจสอบข้อมูลที่จำเป็น
+  if (!emp_id) {
+    alert('กรุณาเลือกพนักงาน');
+    return;
+  }
+  if (!gsd_id) {
+    alert('กรุณาเลือก GSD');
+    return;
+  }
+
+  try {
+    showLoading();
+    const result = await saveTrainingData(emp_id, gsd_id, productType, customer, quality, performance, style);
+    
+    if (result.action === 'created') {
+      alert('สร้างข้อมูลการฝึกอบรมใหม่เรียบร้อยแล้ว');
+      // อัพเดท theadId ด้วยข้อมูลใหม่
+      theadId = result.data.data.documentId;
+    } else if (result.action === 'updated') {
+      alert('อัพเดทข้อมูลการฝึกอบรมเรียบร้อยแล้ว');
+    }
+    
+  } catch (error) {
+    console.error('Error saving training data:', error);
     alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล: ' + error.message);
   } finally {
     hideLoading();
